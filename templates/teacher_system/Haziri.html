@@ -1,0 +1,172 @@
+{% extends 'index.html' %}
+{% block aside %}
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'teacher-system'%}" class="icon-a">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'my-profile'%}" class="icon-a active">
+            <span class="fa fa-users icons"></span>
+            <h3>My Classes</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Log out</h3>
+        </a>
+    </div>
+</aside>
+{% endblock aside %}
+<!--------------- END OF ASIDE ---------------->
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="information">
+        <div class="inline">
+
+            <div class="info-student">
+                <h3>Class ID:<span class="success">{{group.id}}</span></h3>
+                {% for i in teachers %}
+                <h3>Teacher's Name: <span
+                        class="success">{{i.id_teacher.admin.first_name}}&nbsp;{{i.id_teacher.admin.last_name}}</span>
+                </h3>
+                {% endfor %}
+                <h3>department: <span class="success">{{group.subject}}</span> </h3>
+                <h3>Total Students: <span class="success">{{students_count}}</span></h3>
+
+            </div>
+            <div class="info-student">
+                <h3>Starting Time: <span class="success">{{group.start_time}}</span></h3>
+                <h3>Starting Date: <span class="success">{{group.start_date|date:"D d M Y" }}</span></h3>
+                <h3>Ending Date: <span class="success">{{group.end_date|date:"D d M Y" }}</span></h3>
+                <h3>Room #: <span class="success">{{group.number_class}}</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-order">
+        <form action="{% url 'attendance-system' %}" method="post">
+            {% csrf_token %}
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>Student_ID</th>
+                        <th>Full Name</th>
+                        <th>F/Name</th>
+                        <th>Roll-call</th>
+                        <th>Paid Fee</th>
+                        <th>Unpaid fee</th>
+                    </tr>
+
+                    {% for i in students %}
+                    <tr>
+                        <td>{{i.id_student.id}}</td>
+                        <td><a href="{% url 'my-student' i.id %}">{{i.id_student.first_name}}
+                                {{i.id_student.last_name}}</a></td>
+                        <td>{{i.id_student.father_name}}</td>
+                        <td class="success">
+                            <input type="checkbox" id="present" name="pre{{forloop.counter}}" checked value="1">
+                            <input type="number" hidden name="id{{forloop.counter}}" value="{{i.id}}">
+                            <input type="number" hidden name="stu{{forloop.counter}}" value="{{i.id_student.id}}">
+                        </td>
+                        <td>{{i.fees.fees}} AF</td>
+                        <td class="danger">{{i.fees.baqi}}</td>
+                        {% empty %}
+                        <td>Sorry, no athletes in this list.</td>
+                    </tr>
+
+                    {% endfor %}
+                    <input type="number" hidden name="total" value="{{students_count}}">
+                    <input type="number" hidden name="group_id" value="{{group.id}}">
+                </tbody>
+                </thead>
+            </table>
+            <a><input class="present_btn" type="submit" value="save"></a>
+        </form>
+    </div>
+</main>
+{% endblock main %}
+<!--------------------- END OF MAIN ------------------------------>
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Class Options</h2>
+        <div class="updates center">
+            <h3 class="primary">Option Box!</h3>
+            <p>Set Mark Set activats show Score class Attendance.</p>
+            <br>
+            <a class="btn" href="{% url 'class-score' group.id %}">Set Score</a>
+            <a class="btn" href="{% url 'class-report' group.id %}">Show Score</a>
+            <a class="btn" href="{% url 'class-activit' group.id %}">Class Activates</a><br><br>
+            <a class="btn" href="{% url 'attendance-show' group.id %}">Class attendance</a>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Analysis of Students</h2>
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>STUDENT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_group}}%</h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_fees}}%</h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+
+
+    </div>
+</div>
+{% endblock right %}

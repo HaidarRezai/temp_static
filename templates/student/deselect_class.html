@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Deselect this Class</h2>
+        <div class="information">
+            <h2>Are Sure Deselect <span class="danger">{{ deselect.id_group.subject }} Time:
+                    {{ deselect.id_group.start_time }}</span></h2>
+            <div class="deleteare">
+                <p>Are you sure to Deselect this <span class="danger">{{ deselect.id_group.subject }} Time
+                        {{ deselect.id_group.start_time }}</span> if you want to delete click on delete but if you want
+                    to cancel click on cancel</p>
+                <a href="{% url 'dodeselect-class' deselect.id %}" class="delete"><span
+                        class="fa fa-trash-alt spancons"></span> Delete</a>
+                <a href="{% url 'student' %}" class="cancel">Cancel</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

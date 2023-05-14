@@ -1,0 +1,123 @@
+{% extends 'index.html' %}
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="information">
+         
+        <div class="inline">
+            <div class="user-photo">
+                {% if assistant.admin.profile_pic == "" %}
+
+                {% load static %}
+                <img src="{% static './image/profile_user.png'%}">
+
+                {% else %}
+                <img src="/{{assistant.admin.profile_pic}}">
+                {% endif %}
+            </div>
+            <div class="info-student">
+                <h3>ID: <span class="success">{{assistant.id}}</span></h3>
+                <h3>Full Name: <span
+                        class="success">{{assistant.admin.first_name}}&nbsp;{{assistant.admin.last_name}}</span></h3>
+                <h3>Father Name: <span class="success">{{assistant.father_name}}</span> </h3>
+                <h3>Phone #: <span class="success">{{assistant.phone_one}} / {{assistant.phone_tow}}</span> </h3>
+                <h3>Username: <span class="success">{{assistant.admin.username}}</span> </h3>
+                <h3>Degree Edu: <span class="success">{{assistant.degree_edu}}</span> </h3>
+            </div>
+            <div class="info-student">
+                <h3>Last Login: <span class="success">{{assistant.admin.last_login}}</span> </h3>
+                <h3>Chick-in: <span class="success">{{assistant.admin.date_joined}}</span></h3>
+                <h3>Email: <span class="success">{{assistant.admin.email}}</span> </h3>
+                <h3>NIC#: <span class="success">{{assistant.idcord}}</span> </h3>
+                <h3>Main Address: <span class="success">{{assistant.address_one}}</span> </h3>
+                <h3>Crurent Address: <span class="success">{{assistant.address_tow}}</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-order">
+         <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Salary</th>
+                    <th>Remainder</th>
+                    <th>Pay By</th>
+                    <th>Date Pay</th>
+                </rt>
+
+                {% for i in salary %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.salary}}</td>
+                    <td>{{i.baqiyat}}</td>
+                    <td>{{i.by.first_name}} {{i.by.last_name}}</td>
+                    <td>{{i.timestamp|date:"D d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+
+        <div class="center">
+            <div class="pagination">
+                {% if salary.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ salary.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ salary.number }}</a> <a>of</a>
+                    <a>{{ salary.paginator.num_pages }}</a>
+                </span>
+
+                {% if salary.has_next %}
+                <a href="?page={{ salary.next_page_number }}">next</a>
+                <a href="?page={{ salary.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div> 
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Pay Salary</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <form action="{% url 'payment-assistant' %}" method="post">
+                    {% csrf_token %}
+                    <h3 class="success">Payment<h3>
+                    <input type="number" required min="0" name="salary" placeholder="Amount">
+                    <input type="number" required name="baqiyat" placeholder="Remainder">
+                    <input type="number" required name="assistant" hidden value="{{assistant.id}}">
+                    <input type="submit" value="Pay">
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="btns">
+            <a class="btnu" href="{% url 'assistant-update' assistant.id %}">Update</a>
+            <a class="btnd" href="{% url 'assistant-delete' assistant.id %}">Delete</a>
+        </div>
+    </div>
+    
+</div>
+{% endblock recent-updates %}
+{% block incom %}
+<a href="{% url 'assistant-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Assistant</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

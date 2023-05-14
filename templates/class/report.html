@@ -1,0 +1,129 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% include 'class/asidebar.html' %}
+{% endblock aside %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <div class="payment">
+            <h2>Score Records</h2>
+            {% if group.subject == 'Starter' or group.subject == 'Prep 1' or group.subject == 'Prep 2' or group.subject == 'Prep 3' %}
+            <table>
+                <thead>
+                    <tbody>
+                        <rt>
+                            <th>Full Name</th>
+                            <th>Middle</th>
+                            <th>Final</th>
+                            <th>Class Activity</th>
+                            <th>Homework</th>
+                            <th>Total</th>
+                            <th>Result</th>
+                        </rt>
+                        {% for i in students %}
+                        <tr>
+                            <td class="primary">{{i.id_student.first_name}} {{i.id_student.last_name}}</td>
+                            <td class="primary">{{i.priClass.score}}</td>
+                            <td class="primary"><span class="value_fr">{{i.priClass.final_score}}</span></td>
+                            <td class="primary">{{i.priClass.activate}}</td>
+                            <td class="primary">{{i.priClass.home_work}}</td>
+                            <td class="primary">{{i.priClass.total}} / 100</td>
+                            <td class="primary">{{i.priClass.result}}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>Subject: {{group.subject}}</td>
+                            <td>Time: {{group.start_time|date:"g:i A"}}</td>
+                            <td>Date: {{group.start_date|date:"D d M Y"}}</td>
+                            {% for j in teacher %}
+                            <td>Teacher: {{j.id_teacher.admin.first_name}} {{j.id_teacher.admin.last_name}}</td>
+                            {% endfor %}
+                        </tr>  
+                    </tbody>
+                </thead>
+            </table>
+            {% else %}
+                <table>
+                    <thead>
+                        <tbody>
+                            <rt>
+                                <th>Full Name</th>
+                                <th>level</th>
+                                <th>Reading</th>
+                                <th>Writing</th>
+                                <th>Listening</th>
+                                <th>Speaking</th>
+                            </rt>
+                            {% for i in students %}
+                            <tr>
+                                <td class="primary">{{i.id_student.first_name}} {{i.id_student.last_name}}</td>
+                                <td class="primary">Middle</td>
+                                <td class="primary"><span class="value_fr">{{i.proClass.re}}</span></td>
+                                <td class="primary">{{i.proClass.wr}}</td>
+                                <td class="primary">{{i.proClass.li}}</td>
+                                <td class="primary">{{i.proClass.sp}}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Score</td>
+                                <td class="danger">Final</td>
+                                <td class="primary"><span class="value_mr">{{i.proClass.fre}}</span></td>
+                                <td class="primary">{{i.proClass.fwr}}</td>
+                                <td class="primary">{{i.proClass.fli}}</td>
+                                <td class="primary">{{i.proClass.fsp}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{i.proClass.total}}</td>
+                                <td class="danger">Total</td>
+                                <td class="primary">{{i.proClass.tot_rea}}</td>
+                                <td class="primary">{{i.proClass.tot_wri}}</td>
+                                <td class="primary">{{i.proClass.tot_lis}}</td>
+                                <td class="primary">{{i.proClass.tot_spe}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td>Level: {{group.subject}}</td>
+                                <td>Time: {{group.start_time|date:"g:i A"}}</td>
+                                <td>Date: {{group.start_date|date:"D d M Y"}}</td>
+                                {% for j in teacher %}
+                                <td>Partner's: {{j.id_teacher.admin.first_name}} {{j.id_teacher.admin.last_name}}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </thead>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Options</h2>
+        <div class="updates center">
+            <h3 class="primary">Option Box!</h3>
+            <p>Print class marks report from all student.</p>
+            <button class="btn" onclick="window.print()">Print Score</button>
+        </div>
+    </div>
+{% endblock recent-updates %}
+
+{% block incom %}
+{% if user.user_type == '4' %}
+
+{% else %}
+<a href="{% url 'student-new' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-user-plus icons"></span>
+            <h3>Register Student</h3>
+        </div>
+    </div>
+</a>
+{% endif %}
+{% endblock incom %}

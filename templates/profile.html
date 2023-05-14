@@ -1,0 +1,124 @@
+{% extends 'index.html' %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+    <div class="information">
+        <div class="inline">
+            <div class="user-photo">
+                <img src="{{user.profile_pic}}">
+            </div>
+            <div class="info-student">
+                <h3>ID:<span class="success">{{user.id}}</span></h3>
+                <h3>Name: <span class="success"> {{user.first_name}} {{user.last_name}}</span></h3>
+                <h3>Email: <span class="success">{{user.email}}</span></h3>
+                <h3>Chick-in: <span class="success">{{user.date_joined}}</span></h3>
+            </div>
+            <div class="btns">
+                <a class="btnu" href="{% url 'profile-update' %}">Update</a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block right %}
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <span class="">&#9776;</span>
+        </button>
+        <div class="profile">
+            <div class="info">
+                <p>Hey <b>{{user.first_name}}&nbsp;{{user.last_name}}</b></p>
+                {% if user.user_type == '1'%}
+                <small class="text-muted">Admin</small>
+                {% endif %}
+                {% if user.user_type == '2'%}
+                <small class="text-muted">HOD</small>
+                {% endif %}
+                {% if user.user_type == '3'%}
+                <small class="text-muted">Staff</small>
+                {% endif %}
+                {% if user.user_type == '4'%}
+                <small class="text-muted">Teacher</small>
+                {% endif %}
+            </div>
+            <a href="{% url 'profile'%}">
+                <div class="profile-photo">
+                    {% load static %}
+                    <img src="/{{user.profile_pic}}">
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- End top -->
+    {% block recent-updates %}
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>To Day Analytics</h2>
+
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>NEW STUDENT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_group}}%</h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_fees}}%</h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+
+        {% block incom %}
+        <a href="{% url 'student-new' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-user-plus icons"></span>
+                    <h3>Register Student</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+</div>
+{% endblock right %}

@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>List of salary {{teacher.admin.first_name}} {{teacher.admin.last_name}}</h2>
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Amount</th>
+                    <th>Remainder</th>
+                    <th>Date of Pay</th>
+                </rt>
+                <tr>
+                    <td>{{baqi.id}}</td>
+                    <td class="primary">{{baqi.salary}}</td>
+                    <td class="danger"><span id="amount_pay">{{baqi.baqiyat}}</span></td>
+                    <td>{{baqi.timestamp|date:"D d M Y" }}</td>
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+        {% comment %} <a href="{% url 'teacher-show_salary' teacher.id %}" class="center">Back</a> {% endcomment %}
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Pay Salary</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <form action="{% url 'pay-remaind-month' %}" method="post">
+                    {% csrf_token %}
+                    {% csrf_token %}
+                    <h3 class="success"><span id="amount"></span> Afghani Amount Pay<h3>
+                    <input type="number" required min="0" id="salary_pay" oninput="countBaqi()" name="salary"
+                        placeholder="Salary">
+                    <input type="number" required id="baqi" hidden name="baqiyat" value=""
+                        placeholder="Remainder">
+                    <input type="number" required name="id_pay" hidden value="{{baqi.id}}">
+                    <input type="submit" value="Pay">
+                    <h3 class="danger" id="calculator_pay"></h3>
+                </form>
+            </div>
+            <script>
+                var amount_pay = document.getElementById("amount_pay").innerHTML;
+                document.getElementById("amount").innerHTML = amount_pay;
+
+                function countBaqi() {
+                    var salary_pay = document.getElementById("salary_pay").value;
+                    document.getElementById("salary_pay").max = amount_pay;
+                    salary_pay = amount_pay - salary_pay;
+                    document.getElementById("baqi").value = salary_pay.toFixed(0);
+                    document.getElementById("calculator_pay").innerHTML = "Remainder " + salary_pay;
+                }
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}

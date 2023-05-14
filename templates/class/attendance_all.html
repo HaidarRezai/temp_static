@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% include 'class/asidebar.html' %}
+{% endblock aside %}
+
+{% block incom %}
+{% if user.user_type == '1' %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endif %}
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+
+    <div class="recent-order">
+         
+        <table>
+            <thead>
+                <tbody id="name">
+                    <script>
+                        var full_name=[ {% for n in att_stu %}
+                            "{{n.group_student.id_student.first_name}} / {{n.group_student.id_student.father_name}}",
+                        {% endfor %}];
+
+                        var date_att=[ {% for e in att_stu %}
+                             '{{e.timestamp|date:"m-d / g:i A"}}',
+                        {% endfor %}];
+
+                        var att=[ {% for d in att_stu %}
+                             '{{d.present}}',
+                        {% endfor %}];
+                        
+                        var name="<tr style='text-align:left;' ><th>Name and F/Name</th><th class='th'>"+date_att[0]+
+                            "</th><th class='th'>"+date_att[{{student}}]+"</th><th class='th'>"+date_att[{{student}}*2]+
+                            "</th> <th class='th'>"+date_att[{{student}}*3]+"</th><th class='th'>"+date_att[{{student}}*4]+
+                            "</th> <th class='th'>"+date_att[{{student}}*5]+"</th><th class='th'>"+date_att[{{student}}*6]+
+                            "</th> <th class='th'>"+date_att[{{student}}*7]+"</th><th class='th'>"+date_att[{{student}}*8]+
+                            "</th> <th class='th'>"+date_att[{{student}}*9]+"</th></tr>";
+                        var r;
+                        for (r = 0; r < {{student}}; r++){
+
+                            name += "<tr><td  style='text-align:left;'>"+full_name[r]+ "</td> <td>"+
+                            att[r]+"</td><td>"+  att[r+{{student}}]+"</td><td>"+
+                            att[r+({{student}}*2)]+"</td><td>"+att[r+({{student}}*3)]+"</td><td>"+
+                            att[r+({{student}}*4)]+"</td><td>"+att[r+({{student}}*5)]+"</td><td>"+
+                            att[r+({{student}}*6)]+"</td><td>"+att[r+({{student}}*7)]+"</td><td>"+
+                            att[r+({{student}}*8)]+"</td><td>"+att[r+({{student}}*9)]+"</td></tr>";
+                        }
+                        document.getElementById("name").innerHTML = name;
+                    </script>
+                </tbody>
+            </thead>
+        </table>
+    </div>
+
+</main>
+{% endblock main %}

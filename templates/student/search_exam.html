@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% load static %}
+{% block top_side %}
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            
+            <div class="logo" style="margin-left: 0.5rem;">
+                <img src="{% static './image/logo.png'%}">
+            </div>
+        </div>
+    </div>
+ {% endblock top_side %}
+{% endblock aside %}
+{% block main %}
+<main>
+    <div class="inline">
+        <h1>Exam page</h1>
+    </div>
+    
+    <div class="recent-order" style="width: 100%;">
+        <div class="information">
+            {% if exam_info.first_name %}
+            <a href="{% url 'invaumant' exam_info.id %}">
+                <div class="date">
+                    <h3>Are you {{exam_info.first_name}} {{exam_info.father_name}}? Clicked</h3>
+                </div>
+            </a>
+            {% else %}
+            <div class="date">
+                <h3 class="danger">{{exam_info}}</h3>
+            </div>
+            {% endif %}
+            <div class="deleteare">
+                <form action="{% url 'search-exam-test' %}" method="post">
+                    {% csrf_token %}
+                    <input type="search" name="search">
+                    <br>
+                    <input type="submit" value="save">
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block right %}
+
+{% endblock right %}

@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+{% include 'class/asidebar.html' %}
+{% endblock aside %}
+
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+
+    <div class="recent-order">
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success'%}
+        <script>
+            swal('Good job!', '{{message}}', 'success')
+        </script>
+        {% endif %}
+        {% endfor %}
+        {% endif%}
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'warning'%}
+        <h2 class="danger">{{message}}</h2>
+        {% endif %}
+        {% endfor %}
+        {% endif%}
+        {% comment %}
+            {% for i in class_Active %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.group_student.id_student.first_name}}</td>
+                
+                    {% if forloop.counter == 1 %}
+                    <td>{{j.home_work}}</td>
+                    <td>{{j.comment}}</td>
+                    {% endif %}
+                                    
+            </tr>
+            {% endfor %}   
+        {% endcomment %}
+        <table style="width: 90%; float: left;">
+            <thead>
+                <tbody style="text-align:left ;" id="name">            
+                    <script>
+                        var full_name=[ {% for n in class_Active %}
+                        
+                            "{{n.group_student.id_student.first_name}} / {{n.group_student.id_student.father_name}}",
+                        
+                        {% endfor %}];
+
+                        var comment=[ {% for e in class_Active %}
+                             '{{e.comment}} / {{e.timestamp|date:"m-d / g:i A"}}',
+                        {% endfor %}];
+
+                        var home_work=[ {% for d in class_Active %}
+                             '{{d.home_work}}',
+                        {% endfor %}];
+                    
+                
+                        var name="<tr><th>Name and F/Name</th><th class='th'>"+comment[0]+"</th><th class='th'>"+comment[{{student}}]+"</th><th class='th'>"+comment[{{student}}*2]+"</th> <th class='th'>"+comment[{{student}}*3]+"</th> <th class='th'>"+comment[{{student}}*4]+"</th> <th class='th'>"+comment[{{student}}*5]+"</th>  </tr>";
+                        var r;
+                        for (r = 0; r < {{student}}; r++){
+
+                            name += "<tr><td>"+full_name[r]+ "</td> <td>"+
+                            home_work[r]+"</td><td>"+home_work[r+{{student}}]+"</td><td>"+
+                            home_work[r+({{student}}*2)]+"</td><td>"+home_work[r+({{student}}*3)]+"</td><td>"+
+                            home_work[r+({{student}}*4)]+"</td><td>"+home_work[r+({{student}}*5)]+"</td></tr>";
+                        }
+                        document.getElementById("name").innerHTML = name;
+                    </script>
+                </tbody>
+            </thead>
+        </table>
+    </div>
+</main>
+{% endblock main %}

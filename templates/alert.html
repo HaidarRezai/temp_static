@@ -1,0 +1,29 @@
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'success'%}
+<script>
+    swal('Good job!', '{{message}}', 'success')
+</script>
+{% endif %}
+{% endfor %}
+{% endif%}
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error'%}
+<script>
+    swal('Error!', '{{message}}', 'error')
+</script>
+{% endif %}
+{% endfor %}
+{% endif%}
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'warning'%}
+<script>
+    swal('Warning!', '{{message}}', 'warning')
+</script>
+{% endif %}
+{% endfor %}
+{% endif%}

@@ -1,0 +1,36 @@
+{% extends 'finance/index.html' %}
+
+{% block section_middle %}
+<section class="middle">
+    <div class="header">
+        <h1>Overview</h1>
+        <input type="date">
+    </div>
+    <div class="recent-order">
+        <h2>Recent Order</h2>
+        <table>
+            <thead>
+                <rt>
+                    <th>Datils</th>
+                    <th>after</th>
+                    <th>now</th>
+                    <th>Date</th>
+                    <th>By</th>
+                </rt>
+            </thead>
+            <tbody>
+                {% for i in finanace_clear %}
+                <tr>
+                    <td>{{i.datils}}</td>
+                    <td>{{i.after}}</td>
+                    <td>{{i.now}}</td>
+                    <td class="warning">{{i.timestamp}}</td>
+                    <td class="primary">{{i.by.first_name}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="#">Show All</a>
+    </div>
+</section>
+{% endblock section_middle %}

@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Student</h2>
+        <div class="information">
+            <form action="{% url 'student-doupdate'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="student_pic">
+                <input type="text" value="{{student.id}}" hidden name="student_id">
+                <input type="text" name="first_name" value="{{student.first_name}}" placeholder="First Name:">
+                <input type="text" name="last_name" value="{{student.last_name}}" placeholder="Last Name:">
+                <input type="text" name="father_name" value="{{student.father_name}}" placeholder="Father Name:">
+                <input type="text" name="idcard" value="{{student.idcard}}" placeholder="NIC NO#:">
+                <input type="text" name="job" value="{{student.job}}" placeholder="Job:">
+                <input type="text" name="phone_one" value="{{student.phone_one}}" placeholder="Phone #1:">
+                <input type="text" name="phone_tow" value="{{student.phone_tow}}" placeholder="Phone #2:">
+                <input type="text" name="province_one" value="{{student.address_student.province_one}}"
+                    placeholder="Main Province:">
+                <input type="text" name="village_one" value="{{student.address_student.village_one}}"
+                    placeholder="Main District:">
+                <input type="text" name="province_tow" value="{{student.address_student.province_tow}}"
+                    placeholder="Current Province:">
+                <input type="text" name="village_tow" value="{{student.address_student.village_tow}}"
+                    placeholder="Current District:">
+                <textarea name="new_address" placeholder="Address"></textarea>
+
+                <select name="level">
+                    <option value="">Select Level</option>
+                    <option value="Student School">Student School</option>
+                    <option value="Graduate School">Graduate School</option>
+                    <option value="Student University">Student University</option>
+                    <option value="Graduate University">Graduate University</option>
+                </select>
+                <input type="text" name="form" value="{{student.education_student.form}}" placeholder="From">
+                <br>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

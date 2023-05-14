@@ -1,0 +1,132 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% load static %}
+{% block top_side %}
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <div class="logo" style="margin-left: 0.5rem;">
+                <img src="{% static './image/logo.png'%}">
+            </div>
+        </div>
+    </div>
+ {% endblock top_side %}
+{% endblock aside %}
+{% block main %}
+<main>
+    <div class="inline">
+        <h1>Exam page</h1>
+    </div>
+    <div class="date">
+        <h3>Welcome: <span class="primary">{{exam_info.first_name}} {{exam_info.father_name}}</span></h3>
+        <h3><span class="primary">Good Lacky</span></h3>
+        <a href="{% url 'search-exam-test' %}" style="font-size: 1rem;"><span class="fa fa-sign-out-alt danger spancons"> برون شدن از این بخش</span></a>
+    </div>
+    <div class="recent-order" style="width: 100%;">
+        <div class="information">
+            <div class="deleteare">
+                {% if finisht != 0 %}
+                {% if show_exam == 1 %}
+                    <h3 style="font-size: 1.9rem;">&#128151;.به سوال پاسخ داده شده</h3>       
+                {% else %}
+                    {% if answer.has_next %}
+                        <a href="?page={{ answer.next_page_number }}"><input type="button" class="btn" value="بعداً جواب میدهم"></a>
+                    {% endif %}
+                <form action="{% url 'save-exam-text' %}" method="post">
+                    {% csrf_token %}
+                    <table>
+                        <thead>
+                        <tbody>
+                            <rt>
+                                <th>شماره</th>
+                                <th>سوال</th>
+                                <th>انتخاب کنید</th>
+                            </rt>
+                            {% for i in answer %}
+                                    <h3 style="font-size: 1.1rem ;">{{i.questions.question}}</h3>
+                                    <tr>
+                                        <td class="primary">1</td>
+                                        <td class="primary">{{i.answer_1}}</td>
+                                        {% if i.answer_1 == i.questions.answer %}
+                                        <td class="primary"><input required type="radio" name="select" value="5"></td>
+                                        {% else %}
+                                        <td class="primary"><input required type="radio" name="select" value="0"></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td class="primary">2</td>
+                                        <td class="primary">{{i.answer_2}}</td>
+                                        {% if i.answer_2 == i.questions.answer %}
+                                        <td class="primary"><input required type="radio" name="select" value="5"></td>
+                                        {% else %}
+                                        <td class="primary"><input required type="radio" name="select" value="0"></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td class="primary">3</td>
+                                        <td class="primary">{{i.answer_3}}</td>
+                                        {% if i.answer_3 == i.questions.answer %}
+                                        <td class="primary"><input required type="radio" name="select" value="5"></td>
+                                        {% else %}
+                                        <td class="primary"><input required type="radio" name="select" value="0"></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td class="primary">4</td>
+                                        <td class="primary">{{i.answer_4}}</td>
+                                        {% if i.answer_4 == i.questions.answer %}
+                                        <td class="primary"><input required type="radio" name="select" value="5"></td>
+                                        {% else %}
+                                        <td class="primary"><input required type="radio" name="select" value="0"></td>
+                                        {% endif %}
+                                        <input type="number" hidden name="next_page" value="{% if answer.has_next %}{{answer.next_page_number}}{%endif%}">
+                                        <input type="number" hidden name="id_exam" value="{{answer.number}}{{exam_info.id}}">
+                                        <input type="number" hidden name="id_exam_info" value="{{exam_info.id}}">
+                                        <input type="number" hidden name="id_answer" value="{{i.id}}">
+                                    </tr>
+                            {% endfor %}
+                        </tbody>
+                        </thead>
+                    </table>
+                    <input type="submit" value="جواب">
+                </form>
+                {% endif %}
+                <div class="center">
+                    <div class="pagination">
+                         {% if answer.has_previous %}
+                        <a href="?page={{ answer.previous_page_number }}"><span class="fa fa-chevron-left spancons"></span></a>
+                        {% else %}
+                        <a><span class="fa fa-chevron-left spancons"></span></a>
+                        {% endif %}
+
+                        {% for i in answer.paginator.page_range %}
+                            {% if answer.number == i %}
+                                <a class="active">{{i}}</a>
+                            {% else %}
+                                <a href="?page={{ i }}">{{i}}</a>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if answer.has_next %}
+                        <a href="?page={{ answer.next_page_number }}"><span class="fa fa-chevron-right spancons"></span></a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                
+                    <div class="date">
+                        <h1>{{exam.first_name}} {{exam.father_name}}</h1>
+                        <h1>.آیا به تمامی سوالات پاسخ داده اید؟ اگر نه دوباره مرور نماید</h1>
+                        <h1 class="success"><a href="?page=1">مرور دوباره</a></h1>
+                        <h3><span class="primary">در غیری این صورت به مدیر مراجع نماید</span></h3>
+                        <a href="{% url 'search-exam-test' %}" style="font-size: 1.9rem;"><span class="fa fa-sign-out-alt danger spancons"> من تمامی سوالاتم را جواب دادم</span></a>
+                    </div>
+                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+{% block right %}
+{% endblock right %}

@@ -1,0 +1,176 @@
+{% extends 'index.html' %}
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <div class="information">
+        <div class="inline">
+            <div class="info-student">
+                <h3>Class ID: <span class="primary">{{gro_tea.id_group.id}}</span></h3>
+                <h3>Name of class: <span class="primary">{{gro_tea.id_group.subject}}</span></h3>
+                {% comment %} <h3>Salary: <span class="primary">{{gro_tea.pay.salary}}</span></h3>
+                <h3>Remainder: <span id="show_baqi" class="danger">{{gro_tea.pay.baqiyat}}</span></h3> {% endcomment %}
+            </div>
+            <div class="info-student">
+                <h3 id="count"></h3>
+                <h3>Type Salary: <span id="type_salary"
+                        class="primary">{{gro_tea.amount_salary.type_salary}}</span><span id="salary"
+                        class="danger">{{gro_tea.amount_salary.salary}}</span></h3>
+                <h3>Total Fees of student in class: <span id="total_fees" class="primary">{{fees_class}}</span></h3>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    <div class="recent-updates">
+        <h2>Pay Salary</h2>
+        <div class="updates">
+            <div class="input-add">
+                <div class="select-class">
+                    {% if gro_tea.pay.salary %}
+                    {% comment %} <form action="{% url 'pay-baqi' %}" method="post">
+                        {% csrf_token %}
+                        <h3 class="success"><span id="amount"></span> Afghani Amount Pay<h3> {% endcomment %}
+                                {% comment %} <input type="number" min="0" id="salary_pay" oninput="countPaqi()"
+                                    name="salary" placeholder="Salary"> {% endcomment %}
+                                {% comment %} <input type="number" required min="0" id="result_baqi" oninput="payBaqi()"
+                                    name="salary" value="" placeholder="Amount">
+                                <input type="number" required name="baqiyat" hidden id="baqiyat">
+                                <input type="number" required name="group" hidden value="{{gro_tea.pay.id}}">
+                                <input type="submit" value="Pay">
+                                <h3 class="danger" id="calculator"></h3>
+                    </form> {% endcomment %}
+                    {% else %}
+                    <h3 class="success">{{salary}} 's your Percentage</h3>
+                    <form action="{% url 'pay-salary' %}" method="post">
+                        {% csrf_token %}
+                        {% comment %} <h3 class="success"><span id="amount_pay"></span> Afghani Amount Pay<h3>
+                                {% endcomment %}
+                                <input type="number" required min="0" id="salary_pay" hidden name="salary"
+                                    value="{{salary}}" placeholder="Salary">
+                                {% comment %} <input type="number" required id="baqi" name="baqiyat" value=""
+                                    placeholder="Remainder"> {% endcomment %}
+                                <input type="number" required name="group" hidden value="{{gro_tea.id}}">
+                                <input type="submit" value="Pay">
+                                {% comment %} <h3 class="danger" id="calculator_pay"></h3> {% endcomment %}
+                    </form>
+                    {% endif %}
+                </div>
+                {% comment %}
+                <script>
+                    var type_salary = document.getElementById("type_salary").innerHTML;
+                    var salary = document.getElementById("salary").innerHTML;
+                    var total_fees = document.getElementById("total_fees").innerHTML;
+                    var baqi = document.getElementById("baqi").innerHTML;
+
+                    function payBaqi() {
+                        var result_baqi = document.getElementById("result_baqi").value;
+                        var show_baqi = document.getElementById("show_baqi").innerHTML;
+
+                        document.getElementById("result_baqi").max = show_baqi;
+                        document.getElementById("amount").innerHTML = show_baqi;
+
+                        show_baqi -= result_baqi;
+
+                        document.getElementById("calculator").innerHTML = "Remainder " + show_baqi;
+                        document.getElementById("baqiyat").value = show_baqi;
+                    }
+
+
+                    if (type_salary == "Percentage") {
+                        nim = (salary / 2)
+                        salary = (nim * total_fees) / 100;
+                        document.getElementById("amount_pay").innerHTML = salary;
+                        document.getElementById("salary_pay").max = salary;
+
+                        function countBaqi() {
+                            var salary_pay = document.getElementById("salary_pay").value;
+                            var amount_pay = document.getElementById("amount_pay").innerHTML;
+
+                            salary_pay = amount_pay - salary_pay;
+                            document.getElementById("baqi").value = salary_pay.toFixed(0);
+                            document.getElementById("calculator_pay").innerHTML = "Remainder " + salary_pay;
+                        }
+                    }
+                    else if (type_salary == "Fixed" || type_salary == "Month") {
+                        document.getElementById("amount_pay").innerHTML = salary;
+                        function countBaqi() {
+                            var salary_pay = document.getElementById("salary_pay").value;
+                            var amount_pay = document.getElementById("salary").innerHTML;
+
+                            salary_pay = amount_pay - salary_pay;
+                            document.getElementById("salary_pay").max = amount_pay;
+                            document.getElementById("baqi").value = salary_pay;
+                            document.getElementById("calculator_pay").innerHTML = "Remainder " + salary_pay;
+                        }
+                    }
+
+                </script> {% endcomment %}
+            </div>
+        </div>
+    </div>
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Sales Analytics</h2>
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>OFFLINE</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="danger">-50%</h5>
+                <h3>879</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>ONLINE</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+45%</h5>
+                <h3>4545</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>NEW CUSTOMERS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+30%</h5>
+                <h3>4545</h3>
+            </div>
+        </div>
+        {% block incom %}
+        <a href="{% url 'teacher-add' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-chalkboard-teacher icons"></span>
+                    <h3>Register Teacher</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+</div>
+</div>
+{% endblock right %}

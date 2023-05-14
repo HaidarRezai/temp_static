@@ -1,0 +1,32 @@
+{% if user.user_type == '4' %}
+
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'teacher-system'%}" class="icon-a">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'my-profile'%}" class="icon-a active">
+            <span class="fa fa-users icons"></span>
+            <h3>My Class</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Log out</h3>
+        </a>
+    </div>
+</aside>
+{% else %}
+{% include 'sidebar.html' %}
+
+{% endif %}

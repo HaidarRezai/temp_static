@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Update Class</h2>
+        <div class="information">
+            <form action="{% url 'class-doupdate' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="select_class">&nbsp;&nbsp;&nbsp;&nbsp;Select</label>
+                <select class="input" required name="subject">
+                    <option value="{{group.subject}}">---- {{group.subject}} ----</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Prep 1">Prep 1</option>
+                    <option value="Prep 2">Prep 2</option>
+                    <option value="Prep 3">Prep 3</option>
+                    <option value="Intro">Intro</option>
+                    <option value="EAP 1">EAP 1</option>
+                    <option value="EAP 2">EAP 2</option>
+                    <option value="EAP 3">EAP 3</option>
+                    <option value="EAP 4">EAP 4</option>
+                    <option value="EAP 5">EAP 5</option>
+                    <option value="FST">FST</option>
+                    <option value="TOEFL">TOEFL</option>
+                    <option value="Special Speaking">Special Speaking</option>
+                    <option value="Academic Writing">Academic Writing</option>
+                    <option value="Special Kids">Special Kids</option>
+                    <option value="Special Grammar">Special Grammar</option>
+                    <option value="Special Class">Special Class</option>
+                </select>
+                <input type="text" name="id_class" value="{{group.id}}" hidden>
+                <label for="no_class">&nbsp;&nbsp;&nbsp;&nbsp;Room #</label>
+                <input type="text" name="number_class" value="{{group.number_class}}" placeholder="Number of Class:">
+                <br>
+                <label for="fees">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fees</label>
+                <input type="number" name="fees" value="{{group.fees}}" placeholder="Fees:">
+                <label for="start_time">Start time</label>
+                <input type="time" name="start_time">
+                <br>
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_time" name="start_date">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date">
+                <br>
+                <label for="online">Online</label>
+                {% if group.teach_online %}
+                    <input type="checkbox" checked id="online" name="teach_online">
+                {% else %}
+                    <input type="checkbox"  id="online" name="teach_online">
+                {% endif %}
+                <br>
+                {% for j in group_teacher %}
+                <label for="fname">Teacher {{forloop.counter}}</label>
+                <select class="input" name="teacher_{{j.position_teacher}}">
+                    <option value="">---- {{j.id_teacher.admin.first_name}} {{j.id_teacher.admin.last_name}} ----
+                    </option>
+                    {% for i in teacher %}
+                    <option value="{{i.id}}">{{i.admin.first_name}} {{i.admin.last_name}}</option>
+                    {% endfor %}
+                </select>
+                {% comment %} <input type="text" name="id_{{j.position_teacher}}" value="{{j.id_teacher.id}}">
+                {% endcomment %}
+                <input type="text" hidden name="id_teacher_{{j.position_teacher}}" value="{{j.id}}">
+                <div class="dropdown">
+                    <apan class="dropbtn"> Salary </apan>
+                    <div class="dropdown-content">
+                        <input type="text" hidden name="id_amount_{{j.position_teacher}}"
+                            value="{{j.amount_salary.id}}">
+                        <select class="input" name="type_salary_{{j.position_teacher}}">
+                            <option value="{{j.amount_salary.type_salary}}">{{j.amount_salary.type_salary}}</option>
+                            <option value="Percentage">Precentage</option>
+                            <option value="Month">Month</option>
+                            <option value="Fixed">Fixed</option>
+                        </select>
+                        <input type="number" value="{{j.amount_salary.salary}}" name="salary_{{j.position_teacher}}"
+                            placeholder="Amount">
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

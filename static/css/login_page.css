@@ -1,0 +1,166 @@
+body {
+  background-color: #f6f6f9;
+}
+
+.login_page {
+  display: flex;
+  flex-direction: column;
+}
+
+.login_insite {
+  width: 30%;
+  max-height: 50%;
+  align-self: center;
+  background: #fff;
+  border-radius: 2rem;
+  padding: 1.8rem;
+  margin-top: 1.4rem;
+  text-align: center;
+  box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.18);
+  transition: all 300ms ease;
+  opacity: 0.9; 
+}
+
+.spaner {
+  z-index: -3;
+  border-radius: 50%;
+  position: fixed;
+  margin-left: 8.5rem;
+  margin-top: 1rem;
+  background: rgb(5, 5, 148);
+  -webkit-animation-name: example;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 1s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: example;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.right {
+  background: rgb(179, 2, 2);
+  margin-left: 30%;
+  animation-direction: alternate-reverse;
+}
+
+.login_page .logo img {
+  width: 10rem;
+  z-index: 500;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+  from {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  to {
+    width: 90rem;
+    height: 90rem;
+  }
+}
+
+/* Standard syntax */
+@keyframes example {
+  from {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  to {
+    width: 90rem;
+    height: 90rem;
+  }
+}
+
+.form {
+  position: relative;
+  width: 85%;
+  height: 3rem;
+  margin: 0.8rem;
+}
+
+.form_input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  font-family: inherit;
+  outline: none;
+  padding: 1.25rem;
+  border: 2px solid #27282f;
+  background-color: transparent;
+}
+
+.form_input:hover {
+  border-color: rgb(160, 99, 245, 0.2);
+}
+
+.form_input:focus {
+  border-color: #41f1b6;
+}
+
+.form select {
+  padding: 0;
+  text-align: center;
+  color: #27282f;
+}
+
+.form_label {
+  position: absolute;
+  left: 1rem;
+  top: 0.7rem;
+  padding: 0 0.3rem 0 0.3rem;
+  cursor: text;
+  font-size: 1.3rem;
+  transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+  background-color: #ffffff;
+}
+
+.form_input:focus ~ .form_label,
+.form_input:not(:placeholder-shown).form_input:not(:focus) ~ .form_label {
+  top: -0.6rem;
+  font-size: 1.1rem;
+  left: 0.8rem;
+}
+
+.btn-save {
+  background: rgb(5, 5, 148);
+  color: #fff;
+  border-radius: 1rem;
+  border: none;
+  text-align: center;
+  padding: 0.6rem 1.8rem 0.6rem 1.8rem;
+  cursor: pointer;
+  margin: 1rem;
+}
+
+.btn-save:hover {
+  background: rgb(31, 31, 255);
+}
+@media screen and (max-width: 1024px) {
+  .login_insite {
+    width: 60%;
+  }
+
+  .form {
+    position: relative;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .login_insite {
+    width: 70%;
+  }
+
+  .form {
+    position: relative;
+    width: 85%;
+  }
+}
+/* ................... Form Group ..................... */

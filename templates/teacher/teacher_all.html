@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Register</th>
+                    <th>Photo</th>
+                </rt>
+                {% for i in teacher %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.admin.first_name}}&nbsp; {{i.admin.last_name}}</td>
+                    <td class="primary">{{i.phone_one}}</td>
+                    <td>{{i.admin.date_joined}}</td>
+                    <td>
+                        <a href="{% url 'teacher-see' i.id %}">
+                            <div class="profile-photo">
+                                {% if i.admin.profile_pic == "" %}
+                                {% load static %}
+                                <img src="{% static '/image/profile_user.png'%}">
+                                {% else %}
+                                {% load static %}
+                                <img src="/{{i.admin.profile_pic }}" alt="Use Image">
+                                {% endif %}
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if teacher.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ teacher.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ teacher.number }}</a> <a>of</a> <a>{{ teacher.paginator.num_pages }}</a>
+                </span>
+
+                {% if teacher.has_next %}
+                <a href="?page={{ teacher.next_page_number }}">next</a>
+                <a href="?page={{ teacher.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Search Teacher</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <h3 class="primary">Search Box!</h3>
+                <p>You can search by ID, Name and Phone Number.</p>
+                <br>
+                <form action="{% url 'teacher'%}" method="post">
+                {% csrf_token %}
+                <input type="search" autofocus required name="search" placeholder="Teacher ID">
+                <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+{% block analytics %}
+    <div class="sales-analytics">
+        
+        <a href="{% url 'list-food' %}">
+            <div class="item offline">
+                <div class="icon">
+                    <span class="fa fa-utensils icons"></span>
+                </div>
+                <div class="right">
+                    <div class="info">
+                        <h3>Food</h3>
+                        <small class="text-muted">Payment of food</small>
+                    </div>
+                    <h5 class="danger"></h5>
+                    <h3>0</h3>
+                </div>
+            </div>
+        </a>
+        {% block incom %}
+        <a href="{% url 'teacher-add' %}">
+        <div class="item add-product">
+            <div>
+                <span class="fa fa-chalkboard-teacher icons"></span>
+                <h3>Register Teacher</h3>
+            </div>
+        </div>
+        </a>
+        {% endblock incom %}
+    </div>
+{% endblock analytics %}

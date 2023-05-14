@@ -1,0 +1,56 @@
+<div id="popChains">
+    <div class="close_pup">
+        <a class="fa fa-window-close danger icons" onclick="itemToggle('Chains');">
+        </a>
+    </div>
+    <h3>Add New Class</h3>
+    <div class="popup_sub">
+        <div class="content">
+            <form action="{% url 'student-register_class' %}" method="post" id="register_cha">
+                {% csrf_token %}
+                {% for s in subjects %}
+                {% if s.department == '4' %}
+                <div class="sub">
+                    <p class="primary">{{s.subject}}</p>
+                    <br>
+                    {% for i in group_all %}
+                    {% if i.subject == s.subject %}
+                    {% if i.teach_online %}
+                    <p class="time_table danger">{{i.start_time|time:"g:i A"}} {{i.number_class}}
+                        {% else %}
+                    <p class="time_table">{{i.start_time|time:"g:i A"}} {{i.number_class}}
+                        {% endif %}
+                        <input required  onchange="setValue{{s.id}}('{{i.fees}}')" type="radio" name="id_group" value="{{i.id}}">
+                    </p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <script>
+                    function setValue{{s.id}}(fees){
+                        document.getElementById("fee_cha").value = fees;
+                    }
+                </script>
+                {% endif %}
+                {% endfor %}
+                <input type="number" required name="id_student" hidden value="{{student.id}}">
+            </form>
+        </div>
+        <div class="submit_sub">
+            <div class="submit_core">
+                <input type="number" form="register_cha" disabled required name="fees" id="fee_cha" placeholder="Fee">
+                <input type="number" form="register_cha" name="unpaid" placeholder="Unpaid Fee">
+                <select onchange="showDescountCha()" form="register_cha" id="selector_cha" class="input" required name="subject">
+                    <option value="0">Descount</option>
+                    <option value="10,تعدد برنامه">تعدد برنامه</option>
+                    <option value="20,خانواده گی">خانواده گی</option>
+                    <option value="30,دانشجویی برتر">دانشجویی برتر</option>
+                    <option value="5,نهاد همکار">نهاد همکار</option>
+                    <option value="5,انستیوت">انستیوت</option>
+                </select>
+                <input type="number" name="disc" form="register_cha" hidden max="100" min="0" id="descunt_cha" placeholder="Descount">
+                <textarea name="comm" form="register_cha" placeholder="Comment..." id="comment_cha" hidden cols="30" rows="4"></textarea>
+                <button class="submit_btn" form="register_cha" onclick="lockBtn(this)">Register</button>
+            </div>
+        </div>
+    </div>
+</div>

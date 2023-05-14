@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+         
+        <h2>List of salary {{teacher.admin.first_name}} {{teacher.admin.last_name}}</h2>
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Amount</th>
+                    {% comment %} <th>Remainder</th> {% endcomment %}
+                    <th>Date of Pay</th>
+                </rt>
+                {% for i in pay_month %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td class="primary">{{i.salary}}</td>
+                    {% comment %} <td class="danger"><a href="{% url 'show_remaind_month' i.id%}">{{i.baqiyat}}</a></td>
+                    {% endcomment %}
+                    <td>{{i.timestamp|date:"D d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <a href="{% url 'teacher-show_salary' teacher.id %}" class="center">Back</a>
+        <div class="center">
+            <div class="pagination">
+                {% if pay_month.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ pay_month.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ pay_month.number }}</a> <a>of</a> <a>{{ pay_month.paginator.num_pages }}</a>
+                </span>
+
+                {% if pay_month.has_next %}
+                <a href="?page={{ pay_month.next_page_number }}">next</a>
+                <a href="?page={{ pay_month.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Pay Salary</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <form action="{% url 'pay-month' %}" method="post">
+                    {% csrf_token %}
+                    <h3 class="primary">Payment Box!</h3>
+                    <p>You can pay Monthly for teacher Just does teacher you Contract whit them.</p>
+                    <br>
+                    <input type="number" required min="0" name="salary" placeholder="Amount">
+                    {% comment %} <input type="number" required name="baqiyat" placeholder="Remainder">
+                    {% endcomment %}
+                    <input type="number" required name="teacher" hidden value="{{teacher.id}}">
+                    <input type="submit" value="Pay">
+                    <h3 class="danger" id="calculator"></h3>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}

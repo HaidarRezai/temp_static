@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Result of {{exam_info.first_name}} {{exam_info.father_name}}</h2>
+        
+            <table>
+                <thead>
+                <tbody>
+                    <rt>
+                        <th>Mark</th>
+                        <th>Exam Type</th>
+                        <th>Precentage</th>
+                        <th>Questions of Anwer</th>
+                        <th>Total Questions</th>
+                    </rt>
+                    <tr>
+                        <td class="primary">{{result}}</td>
+                        <td class="primary">
+                            {% if exam_info.type_exam == '1' %}
+                            Level One
+                            {% elif exam_info.type_exam == '2' %}
+                            Level Two
+                            {% elif exam_info.type_exam == '3' %}
+                            Level Three 
+                            {% endif %}
+                        </td>
+                        <td>{{pre}} %</td>
+                        <td>{{doexam}}</td>
+                        <td class="primary">{{cou}}</td>
+                    </tr>
+                </tbody>
+                </thead>
+            </table>
+        
+    </div>
+</main>
+
+{% endblock main %}
+
+
+{% block analytics %}
+{% include 'exam_option.html' %}
+{% endblock analytics %}

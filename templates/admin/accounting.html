@@ -1,0 +1,302 @@
+{% extends 'index.html' %}
+
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <br>
+    <br>
+    <h2> Finance Manager </h2>
+    <div class="information">
+        <div class="inline">
+            <div>
+                <form action="{% url 'input-add'%}" method="post">
+                    {% csrf_token %}
+                    <input type="number" required name="money" placeholder="Amount">
+                    <input type="text" required name="datils" placeholder="Datils">
+                    <input type="submit" value="Save" onclick="lockBtn(this)">
+                </form>
+            </div>
+            {% if user.user_type == '1' %}
+            <div>
+                <form action="{% url 'output-add'%}" method="post">
+                    {% csrf_token %}
+                    <input type="number" required name="money" placeholder="Amount">
+                    <input type="text" required name="datils" placeholder="Datils">
+                    <input type="submit" value="Save" onclick="lockBtn(this)">
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="inline">
+        {% if totla_report_day or output_totla_report_day %}
+        <div class="information">
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                        <th>Do by</th>
+                    </tr>
+                    <script>var x = 0;</script>
+                    {% for i in report_day %}
+                    <script>x += {{ i.money }}</script>
+                    <tr>
+                        <td class="success">{{i.money}} </td>
+                        <td class="primary">{{i.datils}} </td>
+                        <td>{{i.timestamp|time}}</td>
+                        <td>{{i.by.first_name}} {{i.by.last_name}}</td>
+                    </tr>
+                    {% ifchanged i.timestamp|date:"d" %}
+                    <tr>
+                        <td colspan="3">Day: {{i.timestamp|date:"d"}}</td>
+                        <td class="success">Total Days
+                            <script>
+                                document.write(x)
+                                x = 0
+                            </script>
+                            AFG
+                        </td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+        {% if user.user_type == '1' %}
+        <div class="information" style="margin-left:5px;">
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                        <th>Do by</th>
+                    </tr>
+                    <script>var y = 0;</script>
+                    {% for i in output_report_day %}
+                    <tr>
+                        <td class="danger">{{i.money}} </td>
+                        <td class="primary">{{i.datils}} </td>
+                        <td> {{i.timestamp|time}}</td>
+                        <td>{{i.by.first_name}} {{i.by.last_name}}</td>
+                    </tr>
+                    <script>y += {{ i.money }}</script>
+                    {% ifchanged i.timestamp|date:"d" %}
+                    <tr>
+                        <td colspan="3">Days: {{i.timestamp|date:"d"}}</td>
+                        <td class="danger">Total Span:
+                            <script>
+                                document.write(y)
+                                y = 0
+                            </script>
+                            AFG
+                        </td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="information">
+            <h3>Not Fount </h3>
+        </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock main %}
+
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Reports</h2>
+        <div class="updates">
+            {% if user.user_type == '1'%}
+            <form action="{% url 'filter-ass'%}" method="post">
+                {% csrf_token %}
+                <select class="filter" name="ass_id">
+                    <option>Filter All</option>
+                    {% for i in asisstant %}
+                    {% if i.user_type == '1' or i.user_type == '5' %}
+                    <option value="{{i.id}}">{{i.first_name}} {{i.last_name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Filter">
+            </form>
+            {% endif %}
+            <form action="{% url 'acounting'%}" method="post">
+                {% csrf_token %}
+                <input type="month" required name="search">
+                <input type="submit" value="Search">
+            </form>
+            <table>
+                <br>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>Date</th>
+                        <th><span class="fa fa-arrow-down icons success"></span> Input </th>
+                        <th><span class="fa fa-arrow-up icons danger"></span> Output </th>
+                        <th><span class="fa fa-equals icons primary"></span> Result </th>
+                    </tr>
+                    <tr>
+                        <td class="primary">To Day</td>
+                        <td class="success">&nbsp;&nbsp;{{totla_report_day}} </td>
+                        <td class="danger">&nbsp;&nbsp;{{output_totla_report_day}} </td>
+                        <td class="primary">&nbsp;&nbsp;{{totla_day}} </td>
+                    </tr>
+                    <tr>
+                        <td class="primary">This Month</td>
+                        <td class="success">&nbsp;&nbsp;{{totla_report_month}} </td>
+                        <td class="danger">&nbsp;&nbsp;{{output_totla_report_month}} </td>
+                        <td class="primary">&nbsp;&nbsp;{{totla_month}} </td>
+                    </tr>
+                    <tr>
+                        <td class="primary">This Year</td>
+                        <td class="success">&nbsp;&nbsp;{{totla_report_year}} </td>
+                        <td class="danger">&nbsp;&nbsp;{{output_totla_report_year}} </td>
+                        <td class="primary">&nbsp;&nbsp;{{totla_year}}</td>
+                    </tr>
+                    {% comment %} <tr>
+                        <td class="primary">Total All</td>
+                        <td class="success">{{input}} </td>
+                        <td class="danger">{{output}} </td>
+                        <td> {{i.timestamp|time}}</td>
+                    </tr> {% endcomment %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Course Analytics</h2>
+        {%if user.user_type == '1'%}
+        <div class="item customers" onclick="analyticsToggle();">
+            <div class="icon">
+                <span class="fa fa-wallet icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>ALL REPORT</h3>
+                    <small class="text-muted">All Amount</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3>{{total_account.total_account}} AFG</h3>
+            </div>
+        </div>
+        {% endif %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-wallet icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>DALY REPORT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{pre_report_day}}%</h5>
+                <h3>{{totla_report_day}} AFG</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-wallet icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>MONTH REPORT</h3>
+                    <small class="text-muted">Last 30 Days</small>
+                </div>
+                <h5 class="success">+{{pre_report_month}}%</h5>
+                <h3>{{totla_report_month}} AFG</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-wallet icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>YEAT REPORT</h3>
+                    <small class="text-muted">Last 1 Year</small>
+                </div>
+                <h5 class="success">+{{pre_report_year}}%</h5>
+                <h3>{{totla_report_year}} AFG</h3>
+            </div>
+        </div>
+
+        {% block incom %}
+        <a href="{% url 'student-new' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-user-plus icons"></span>
+                    <h3>Register Student</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+    <div id="popupana">
+        <div class="close_pup">
+            <a class="fa fa-window-close danger icons" onclick="analyticsToggle();"></a>
+        </div>
+
+        <h2 class="primary">Your Payments</h2>
+        <p>Your Can Charge your class fee </p>
+        <a href="{% url 'add-zinaf' %}">Register New Zinaf</a>
+        <br>
+        <br>
+        <div class="input-add">
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Comment</th>
+                        <th>Request by</th>
+                        <th>Date of Pay</th>
+                        <th>Pay</th>
+                    </tr>
+                    {% for i in request_me %}
+                    <form action="{% url 'pay-zinaf' %}" method="post">
+                        {% csrf_token %}
+                        {% if i.accept_requestzinaf.pay %}
+                        {% else %}
+                        <input type="hidden" value="{{i.id}}" name="zinaf_id">
+                        <tr>
+                            <td>{{i.id}}</td>
+                            <td class="primary">{{i.amount}}</td>
+                            <td>{{i.comment}}</td>
+                            <td class="primary">{{i.zinaf.admin.first_name}} {{i.zinaf.admin.last_name}}</td>
+                            <td>{{i.timestamp}}</td>
+                            <td><input style="width:3.3rem;" type="submit" value="Save"></td>
+                        </tr>
+                        {% endif %}
+                    </form>
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock right %}

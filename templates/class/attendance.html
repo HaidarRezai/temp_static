@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+{% block incom %}
+{% if user.user_type == '1' %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endif %}
+{% endblock incom %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    {% for i in present %}
+                    <th>{{i.timestamp|date:"d" }}</th>
+                    {% endfor %}
+                </rt>
+                <tr>
+                    {% for i in present %}
+                    {% if i.present %}
+                    <td class="success"><span class="fa fa-check icons"></span></td>
+                    {% else %}
+                    <td class="danger"><span class="fa fa-times icons"></span></td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+    </div>
+</main>
+{% endblock main %}

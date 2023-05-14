@@ -1,0 +1,107 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% include 'class/asidebar.html' %}
+{% endblock aside %}
+<!--------------- END OF ASIDE ---------------->
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="information">
+        
+        <div class="inline">
+
+            <div class="info-student">
+                <h3>Class_ID:<span class="success">{{group.id}}</span></h3>
+                {% for i in teachers %}
+                <h3>Partner's: <span
+                        class="success">{{i.id_teacher.admin.first_name}}&nbsp;{{i.id_teacher.admin.last_name}}</span>
+                </h3>
+                {% endfor %}
+                <h3>Lavel: <span class="success">{{group.subject}}</span> </h3>
+                <h3>Total of Students: <span class="success">{{students_count}}</span></h3>
+
+            </div>
+            <div class="info-student">
+                <h3>Start Time: <span class="success">{{group.start_time}}</span></h3>
+                <h3>Total of Fees: <span class="success"> {{total_fees}} AF</span></h3>
+                <h3>Start Date: <span class="success">{{group.start_date|date:"D d M Y" }}</span></h3>
+                <h3>End Date: <span class="success">{{group.end_date|date:"D d M Y" }}</span></h3>
+                <h3>Numner of Class: <span class="success">{{group.number_class}}</span></h3>
+                <a href="#">more</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-order">
+        <form action="{% url 'class-active' %}" method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name & Father Name</th>
+                        <th><input required class="set_total" type="text" placeholder="Enter title score" name="comment" id=""></th>
+                    </tr>
+                    <tbody>
+                        {% for i in students %}
+                            {% csrf_token %}
+                            <tr>
+                                <td><a href="{% url 'student-class_info' i.id %}">{{i.id_student.first_name}} {{i.id_student.last_name}} / {{i.id_student.father_name}}</a></td>
+                                <td>
+                                    Mark: <input type="number" name="home_work{{forloop.counter}}" class="set_scor" min="0" max="10" value="0">
+                                    <input type="number" hidden name="id{{forloop.counter}}" value="{{i.id}}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <input type="number" hidden name="total" value="{{students_count}}">
+                        <input type="number" hidden name="url" value="{{group.id}}">
+                    </tbody>
+                </thead>
+            </table>
+            <a> <input class="present_btn center" type="submit" value="save"></a>
+        </form>
+    </div>
+</main>
+{% endblock main %}
+<!--------------------- END OF MAIN ------------------------------>
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Settings</h2>
+    <div class="updates center">
+        {% if user.user_type == '4' %}
+        {% else %}
+        <p class="primary">You can active and Deactive form heire</p>
+        <form action="{% url 'finisht' %}" method="post">
+            {% csrf_token %}
+            <input type="number" hidden name="id_class" value="{{group.id}}">
+            {% if group.active == '1' %}
+            <input class="btn" type="submit" value="Deactive">
+            {% else %}
+            <input type="submit" value="Active">
+            {% endif %}
+        </form>
+        {% endif %}
+        <h3 class="primary">Option Box!</h3>
+        <p>Show grades and attendance.</p>
+        <br>
+        <a class="btn" href="{% url 'show-class_active' group.id %}">Show activates</a>
+        <a class="btn" href="{% url 'class-report' group.id %}">Show Score</a>
+    </div>
+</div>
+{% endblock recent-updates %}
+
+{% block incom %}
+
+{% if user.user_type == '1' %}
+<a href="{% url 'student-new' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-user-plus icons"></span>
+            <h3>Register Student</h3>
+        </div>
+    </div>
+</a>
+{% endif %}
+{% endblock incom %}

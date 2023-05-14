@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Delete this {{ group.subject }} Class</h2>
+        <div class="information">
+            <h2>Are Sure delete <span class="danger">{{ group.subject }}</span></h2>
+            <div class="deleteare">
+                <p>Are you sure to delete the <span class="danger">{{ group.subject }}</span> if you want to delete
+                    click on delete but if you want to cancel click on cancel</p>
+                <a href="{% url 'class-dodelete' group.id %}" class="delete"><span
+                        class="fa fa-trash-alt spancons"></span> Delete</a>
+                <a href="{% url 'class' %}" class="cancel">Cancel</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

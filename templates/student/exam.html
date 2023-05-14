@@ -1,0 +1,112 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Add Exam Level One</h2>
+        <div class="information">
+            
+
+            <form action="{% url 'add-questions' %}" method="post">
+                {% csrf_token %}
+                <textarea name="questions" style="width: 35rem; height: 9rem;">Questions:</textarea>
+                <br>
+                <input type="text" required name="answer_1" placeholder="Answer 1">
+                <input type="checkbox" name="mark_1" value="1">
+                <br>
+                <input type="text" required name="answer_2" placeholder="Answer 2">
+                <input type="checkbox" name="mark_2" value="1">
+                <br>
+                <input type="text" required name="answer_3" placeholder="Answer 3">
+                <input type="checkbox" name="mark_3" value="1">
+                <br>
+                <input type="text" required name="answer_4" placeholder="Answer 4">
+                <input type="checkbox" name="mark_4" value="1">
+                <br>
+                <input type="number" hidden required name="type_exam" value="1">
+
+                <input type="submit" value="Set">
+            </form>
+            <a href="#">Show Descriptions</a>
+
+        </div>
+    </div>
+
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Questions</th>
+                    <th>Answer_1</th>
+                    <th>Answer_2</th>
+                    <th>Answer_3</th>
+                    <th>Answer_4</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </rt>
+                {% for i in answer %}
+                <tr>
+                    <td class="primary">{{forloop.counter}}</td>
+                    <td class="primary">{{i.questions.question}}</td>
+
+                    {% if i.questions.answer == i.answer_1 %}
+                    <td class="danger">{{i.answer_1}}</td>
+                    {% else %}
+                    <td>{{i.answer_1}}</td>
+                    {% endif %}
+
+                    {% if i.questions.answer == i.answer_2 %}
+                    <td class="danger">{{i.answer_2}}</td>
+                    {% else %}
+                    <td>{{i.answer_2}}</td>
+                    {% endif %}
+                    
+                    {% if i.questions.answer == i.answer_3 %}
+                    <td class="danger">{{i.answer_3}}</td>
+                    {% else %}
+                    <td>{{i.answer_3}}</td>
+                    {% endif %}
+
+                    {% if i.questions.answer == i.answer_4 %}
+                    <td class="danger">{{i.answer_4}}</td>
+                    {% else %}
+                    <td>{{i.answer_4}}</td>
+                    {% endif %}
+                    <td><a href="{% url 'update-exam-test' i.id %}"><span style="font-size: 1.5rem;" class="fa fa-edit icons"></span></a></td>
+                    <td><a href="{% url 'delete-exam-test' i.questions.id %}"><span style="font-size: 1.5rem;" class="fa fa-trash-alt icons danger"></span></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+    </div>
+</main>
+
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Search Questions</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <form action="{% url 'exam_add'%}" method="post">
+                {% csrf_token %}
+                <input type="search" required name="search" placeholder="Search Questions">
+                <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+
+{% block analytics %}
+{% include 'exam_option.html' %}
+{% endblock analytics %}

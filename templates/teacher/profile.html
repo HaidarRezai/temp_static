@@ -1,0 +1,272 @@
+{% extends 'index.html' %}
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="information">
+        <div class="inline">
+            <div class="user-photo">
+                {% if teacher.admin.profile_pic == "" %}
+
+                {% load static %}
+                <img src="{% static './image/profile_user.png'%}">
+
+                {% else %}
+                <img src="/{{teacher.admin.profile_pic}}">
+                {% endif %}
+            </div>
+            <div class="info-student">
+                {% comment %} <h3>ID: <span class="success">{{teacher.id}}</span></h3> {% endcomment %}
+                <h3>Full Name: <span
+                        class="success">{{teacher.admin.first_name}}&nbsp;{{teacher.admin.last_name}}</span></h3>
+                <h3>Father Name: <span class="success">{{teacher.father_name}}</span> </h3>
+                <h3>Phone #: <span class="success">{{teacher.phone_one}} / {{teacher.phone_tow}}</span> </h3>
+                <h3>Username: <span class="success">{{teacher.admin.username}}</span> </h3>
+                <h3>Degree Edu: <span class="success">{{teacher.degree_edu}}</span> </h3>
+                {% comment %} <h3>department: <span class="success">{{teacher.department}}</span> </h3> {% endcomment %}
+            </div>
+            <div class="info-student">
+                {% comment %} <h3>Last Login: <span class="success">{{teacher.admin.last_login}}</span> </h3> {% endcomment %}
+                <h3>Chick-in: <span class="success">{{teacher.admin.date_joined}}</span></h3>
+                <h3>Email: <span class="success">{{teacher.admin.email}}</span> </h3>
+                <h3>NIC#: <span class="success">{{teacher.idcord}}</span> </h3>
+                <h3>Main Address: <span class="success">{{teacher.address_one}}</span> </h3>
+                <h3>Crurent Address: <span class="success">{{teacher.address_tow}}</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>Class ID</th>
+                    <th>Subject</th>
+                    <th>Start Time</th>
+                    <th>Pyment</th>
+                    {% comment %} <th>Remainder</th> {% endcomment %}
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Update class</th>
+                    {% comment %} <th>More</th> {% endcomment %}
+                </rt>
+
+                {% for i in group_teacher %}
+                <tr>
+                    <td>{{i.id_group.id}}</td>
+                    <td><a href="{% url 'class-info' i.id_group.id %}">
+                            {% if i.id_group.active == '1'%}<span class="fa fa-circle icons active"></span>
+                            {% else %}<span class="fa fa-circle icons danger"></span>
+                            {% endif %}
+                            {{i.id_group.subject}}</a>
+                    </td>
+                    <td>{{i.id_group.start_time}}</td>
+                    <td class="success"><a>{{i.pay.salary}}</a></td>
+                    {% comment %} <td class="danger">{{i.pay.baqiyat}}</td> {% endcomment %}
+                    <td>{{i.id_group.start_date|date:"D d M Y" }}</td>
+                    <td class="warning">{{i.id_group.end_date|date:"D d M Y" }}</td>
+                    <td class="primary"><a href=" {% url 'class-update' i.id_group.id %}">Update</a></td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if group_teacher.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ group_teacher.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ group_teacher.number }}</a> <a>of</a>
+                    <a>{{ group_teacher.paginator.num_pages }}</a>
+                </span>
+
+                {% if group_teacher.has_next %}
+                <a href="?page={{ group_teacher.next_page_number }}">next</a>
+                <a href="?page={{ group_teacher.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+    {% if user.user_type == '1' %}
+        <div class="recent-updates">
+            <h2>Pay Salary</h2>
+            <div class="updates">
+                <div class="input-add">
+                    <div class="select-class">
+                        <h3 class="primary">Payment Box!</h3>
+                        <p>You can pay salary, from teacher account.</p>
+                        <br>
+                        <form action="{% url 'payment' %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" required min="0" name="salary" placeholder="Amount">
+                            {% comment %} <input type="number" required name="baqiyat" placeholder="Remainder">
+                            {% endcomment %}
+                            <input type="number" required name="teacher" hidden value="{{teacher.id}}">
+                            <input type="submit" value="Pay"onclick="lockBtn(this)">
+                            <h3 class="danger" id="calculator"></h3>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+    {% endif %}
+{% endblock recent-updates %}
+
+
+{% block analytics %}
+<div class="sales-analytics">
+    <h2>Finance Analytics</h2>
+   {% if user.user_type == '1'  %}  
+   <a href="{% url 'teacher-show_paymen' teacher.id %}">
+   {% endif %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Payment</h3>
+                    <small class="text-muted">Final Finance</small>
+                </div>
+                {% comment %} <h5 class="danger">-50%</h5> {% endcomment %}
+                {% if teacher.amount_salary >= 0 %}
+                <h3 class="primary">{{teacher.amount_salary}} AFN</h3>
+                {% else %}
+                <h3 class="danger">{{teacher.amount_salary}} AFN</h3>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% if user.user_type == '1' %}
+    <a href="{% url 'teacher-show_salary' teacher.id %}">
+    {% endif %}
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-chart-pie icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Class</h3>
+                    <small class="text-muted">department {{teacher.department}}</small>
+                </div>
+                <h5 class="success">Active {{active}}</h5>
+                <h3>All<span class="primary"> {{class}}</span></h3>
+            </div>
+        </div>
+    </a>
+    <div class="item customers" onclick="analyticsToggle();">
+        <div class="icon">
+            <span class="fa fa-bullhorn icons"></span>
+        </div>
+        <div class="right">
+            <div class="info">
+                <h3>Online</h3>
+                <small class="text-muted">{{teacher.admin.last_login|date:"Y-m-d"}}</small>
+            </div>
+            <h5 class="success">{{teacher.admin.last_login|date:"h:i A"}}</h5>
+            <h3>ID<span class="primary"> {{teacher.id}}</span></h3>
+        </div>
+    </div>
+    {% if foots %}
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-utensils icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Foods</h3>
+                    <small class="text-muted"> </small>
+                </div>
+                <h5 class="success"> </h5>
+                <h3>Mony <span class="primary"> {{totalFoot}}</span></h3>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div id="popupana" class="settins_teacher">
+    <div class="close_pup">
+       <a class="fa fa-window-close danger icons" onclick="analyticsToggle();"></a>  
+    </div>
+    <span class="fa fa-cog icons" style="font-size: 3rem;"><p style="font-size: 1rem;">Settings</p></span>
+    <div class="in_pup">
+        <div class="input-add">
+            <form action="{% url 'pay-bonas' %}" method="post">
+                <h3 class="primary">Fines and rewards Box!</h3>
+                <p>Bonus the teacher by writing a positive number.
+                    And penalty the teacher by writing a negative number.</p>
+                {% csrf_token %}
+                <input type="number" hidden required name="c_t_id" value="{{ teacher.id }}">
+                <br>
+                <input type="number" required id="amount" oninput="showTeacherList()" name="amount" placeholder="Enter Amount">
+                <br>
+                <textarea name="desc">Descriptions:</textarea>
+                <br>
+                <select class="input" id="list_teacher" hidden name="teacher_id">
+                    <option value="null">---- Select Teacher ----</option>
+                    {% for j in all_teacher %}
+                    <option value="{{j.id}}">{{j.admin.first_name}} {{j.admin.last_name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="submit" value="Take">
+            </form>
+            <script>
+                function showTeacherList() {
+                  var x = document.getElementById("amount").value;
+                  if(x<0){
+                    document.getElementById("list_teacher").attributes.removeNamedItem("hidden");
+                  }
+                  else{
+                    document.getElementById("list_teacher").createAttributes.setNamedItem("hidden");
+                  }
+                }
+            </script>
+            <a href="{% url 'teacher-show_bonas' teacher.id %}">Show Descriptions</a>
+        </div>
+        <form action="{% url 'teacher-active' %}" method="post">
+            {% csrf_token %}
+            <input type="number" hidden name="url" value="{{teacher.id}}">
+            <input type="number" hidden name="teacher_id" value="{{teacher.admin.id}}">
+            {% if teacher.admin.is_active %}
+            <h3 class="primary">Options Teacher!</h3>
+            <p>This account is active if you click on button deactived.</p>
+            <button><span style="font-size: 1.5rem;" class="fa fa-lock-open  icons"></span></button>
+            {% else %}
+            
+            <p>This account is deactive if you click on button actived.</p>
+            <button><span style="font-size: 1.5rem;" class="fa fa-lock icons"></span></button>
+            {% endif %}
+        </form>
+        <div class="btns">
+           {% if user.user_type == '1' %}
+           <a class="btnu" href="{% url 'teacher-show_salary' teacher.id %}">Finance</a>
+           {% endif %}
+            <a class="btnu" href="{% url 'teacher-update' teacher.id %}">Update</a>
+            <a class="btnd" href="{% url 'teacher-delete' teacher.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+{% endblock analytics %}

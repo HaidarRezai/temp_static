@@ -1,0 +1,39 @@
+{% block top %}
+<div class="top">
+    <button id="menu-btn">
+        <span class="">&#9776;</span>
+    </button>     
+    <div class="theme-toggler" for="subm">
+        <span class="fa fa-sun icons active"></span>
+        <span class="fa fa-moon icons"></span>
+    </div>
+    <div class="profile">
+        <div class="info">
+            <p>Hi <b>{{user.first_name}}&nbsp;{{user.last_name}}</b></p>
+            {% if user.user_type == '1'%}
+            <small class="text-muted">Admin</small>
+            {% endif %}
+            {% if user.user_type == '2'%}
+            <small class="text-muted">HOD</small>
+            {% endif %}
+            {% if user.user_type == '3'%}
+            <small class="text-muted">Staff</small>
+            {% endif %}
+            {% if user.user_type == '4'%}
+            <small class="text-muted">Teacher</small>
+            {% endif %}
+        </div>
+        {% if user.user_type == '4' %}
+        <a href="{% url 'profile-update' %}">
+        {% else %}
+        <a href="{% url 'profile'%}">
+        {% endif %}
+        
+            <div class="profile-photo">
+                {% load static %}
+                <img src="/{{user.profile_pic}}">
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock top %}

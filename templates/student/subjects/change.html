@@ -1,0 +1,36 @@
+<div id="popup">
+    <div class="close_pup">
+        <a class="fa fa-window-close danger icons" onclick="popupToggle();"></a>
+    </div>
+    <h3>Change Class</h3>
+    <div class="popup_sub">
+        <div  class="content">
+            <form action="{% url 'change-class' %}" method="post" id="change_from">
+                {% csrf_token %}
+                {% for s in subjects %}
+                {% if s.department == group_student.id_group.course %}
+                <div class="sub">
+                    <p class="primary">{{s.subject}}</p>
+                    <br>
+                    {% for i in group_all %}
+                    {% if i.subject == s.subject and i.active == '1' %}
+                    <p class="time_table">{{ i.start_time}} {{i.number_class}} <input required
+                    type="radio" name="id_group" value="{{i.id}}"></p>
+                    {% endif %}
+                    {% endfor %}
+                </div> 
+                {% endif %}
+                {% endfor %}
+            </form>
+        </div>
+        <div class="submit_sub">
+            <div class="submit_core">
+                <input type="text" form="change_from" name="id" hidden value="{{group_student.id}}" placeholder="student">
+                <input type="number" form="change_from" name="dec" required placeholder="Descount" max="100" step="0.01" min="0"
+                    style="width:80px;">
+                <input type="submit" form="change_from" value="Change">
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

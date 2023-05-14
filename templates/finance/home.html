@@ -1,0 +1,429 @@
+{% extends 'finance/index.html' %}
+
+{% block section_middle %}
+<section class="middle">
+    <div class="header">
+        <h1>Overview</h1>
+        <form action="{% url 'finance_home'%}" method="post">
+            {% csrf_token %}
+            <input type="month" required name="search">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <div class="cards">
+        <!-- cart one -->
+        <div class="card">
+            <div class="top">
+                <div class="left">
+                    <img src="image/logo.png">
+                    <h2>Income</h2>
+                </div>
+                <img src="image/logo.png" class="right">
+            </div>
+            <div class="middle">
+                <h1>{{totla_report_day}} ف</h1>
+                <div class="chip">
+                    <img src="image/logo.png" class="chip">
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <small>Monthly</small>
+                    <h5>{{totla_report_month}} ف</h5>
+                </div>
+                <div class="right">
+                    <div class="expiry">
+                        <small>Yearly</small>
+                        <h5>{{totla_report_year}} ف</h5>
+                    </div>
+                    <div class="cvv">
+                        <small>Total</small>
+                        <h5>{{input}} ف</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end cart one -->
+
+        <!-- cart two -->
+        <div class="card">
+            <div class="top">
+                <div class="left">
+                    <img src="image/logo.png">
+                    <h2>Export</h2>
+                </div>
+                <img src="image/logo.png" class="right">
+            </div>
+            <div class="middle">
+                <h1>{{output_totla_report_day}} ف</h1>
+                <div class="chip">
+                    <img src="image/logo.png" class="chip">
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <small>Monthly</small>
+                    <h5>{{output_totla_report_month}} ف</h5>
+                </div>
+                <div class="right">
+                    <div class="expiry">
+                        <small>Yearly</small>
+                        <h5>{{output_totla_report_year}} ف</h5>
+                    </div>
+                    <div class="cvv">
+                        <small>Total</small>
+                        <h5>{{output}} ف</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end card two -->
+
+        <!-- cars three -->
+        <div class="card">
+            <div class="top">
+                <div class="left">
+                    <img src="image/logo.png">
+                    <h2>Result</h2>
+                </div>
+                <img src="image/logo.png" class="right">
+            </div>
+            <div class="middle">
+                <h1>{{totla_day}} ف</h1>
+                <div class="chip">
+                    <img src="image/logo.png" class="chip">
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <small>Monthly</small>
+                    <h5>{{totla_month}} ف</h5>
+                </div>
+                <div class="right">
+                    <div class="expiry">
+                        <small>Yearly</small>
+                        <h5>{{totla_year}} ف</h5>
+                    </div>
+                    <div class="cvv">
+                        <small>Total</small>
+                        <h5>{{total}} ف</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end card three -->
+    </div>
+    <!-- end cards  -->
+    <div class="monthly-report">
+        <!-- report one -->
+        <div class="report">
+            <h3>Income</h3>
+            <details>
+                <h1>$43,34</h1>
+                <h6 class="success">+4.5%</h6>
+            </details>
+            <p class="text-muted">Campeat to $40,435 last month</p>
+        </div>
+        <!-- end report one -->
+
+        <!-- report two -->
+        <div class="report">
+            <h3>Income</h3>
+            <details>
+                <h1>$43,34</h1>
+                <h6 class="danger">+4.5%</h6>
+            </details>
+            <p class="text-muted">Campeat to $40,435 last month</p>
+        </div>
+        <!-- end report two -->
+
+        <!-- reprt three -->
+        <div class="report">
+            <h3>Income</h3>
+            <details>
+                <h1>$43,34</h1>
+                <h6 class="success">+4.5%</h6>
+            </details>
+            <p class="text-muted">Campeat to $40,435 last month</p>
+        </div>
+        <!-- end report three -->
+
+        <!-- report four -->
+        <div class="report">
+            <h3>Income</h3>
+            <details>
+                <h1>$43,34</h1>
+                <h6 class="warning">+4.5%</h6>
+            </details>
+            <p class="text-muted">Campeat to $40,435 last month</p>
+        </div>
+        <!-- end report four -->
+    </div>
+    <!-- end of reports -->
+
+    <div class="fast-payment">
+        <h2>Fast Payment</h2>
+        <div class="badges">
+            <div class="badge" onclick="analyticsToggle();">
+                <span class="fa fa-plus-circle spancons"></span>
+            </div>
+            {% for i in asisstant %}
+            {% if i.user_type == '1' or i.user_type == '5' %}
+            <a href="{% url 'finance-filter' i.id %}">
+            <div class="badge">
+                <span class="bg-success"></span>
+                <div>
+                    <h5>{{i.first_name}} {{i.last_name}} {{i.login}}</h5>
+                    <h4></h4>
+                </div>
+            </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- end fast payment -->
+    <div class="item_center_info">
+        {% if totla_report_day or output_totla_report_day %}
+        <div class="information">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                        <th>Do by</th>
+                    </tr>
+                </thead>
+                <script>var x = 0;</script>
+                <tbody>
+                    {% for i in report_day %}
+                    <tr>
+                        <td class="success">{{i.money}} </td>
+                        <td class="primary">{{i.datils}} </td>
+                        <td>{{i.timestamp|time}}</td>
+                        <td>{{i.by.first_name}} {{i.by.last_name}}</td>
+                    </tr>
+                    <script>x += {{ i.money }}</script>
+                    {% ifchanged i.timestamp|date:"d" %}
+                    <tr>
+                        <td colspan="3">Day: {{i.timestamp|date:"d"}}</td>
+                        <td class="success">Total Days
+                            <script>
+                                document.write(x)
+                                x = 0
+                            </script>
+                            AFG
+                        </td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if user.user_type == '1' %}
+        <div class="information">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                        <th>Do by</th>
+                    </tr>
+                </thead>
+                    <script>var y = 0;</script>
+                <tbody>
+                    {% for i in output_report_day %}
+                    <tr>
+                        <td class="danger">{{i.money}} </td>
+                        <td class="primary">{{i.datils}} </td>
+                        <td> {{i.timestamp|time}}</td>
+                        <td>{{i.by.first_name}} {{i.by.last_name}}</td>
+                    </tr>
+                    <script>y += {{ i.money }}</script>
+                    {% ifchanged i.timestamp|date:"d" %}
+                    <tr>
+                        <td colspan="3">Days: {{i.timestamp|date:"d"}}</td>
+                        <td class="danger">Total Span:
+                            <script>
+                                document.write(y)
+                                y = 0
+                            </script>
+                            AFG
+                        </td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="information">
+            <h3>Not Fount </h3>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock section_middle %}
+
+{% block section_right %}
+<section class="right">
+    <div class="investments">
+        <div class="header">
+            <h2>Recent Transactions</h2>
+            <a href="#">More &nbsp;<span class="fa fa-caret-square-right spancons"></span></a>
+        </div>
+        {% for i in report_day %}
+        <div class="investment">
+            <div>
+                <p>{{i.datils}}</p>
+                <small class="text-muted">{{i.timestamp|time}}</small>
+            </div>
+
+            <div class="bonds">
+                <p>{{i.money}} ف</p>
+                <small class="text-muted">{{i.by.first_name}} {{i.by.last_name}}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- End of right -->
+    <div class="recent-transactions">
+        <div class="header">
+            <h2>Recent Transactions </h2>
+            <a href="#">More &nbsp;<span class="fa fa-caret-square-right spancons"></span></a>
+        </div>
+        {% for i in clear_finance %}
+        <div class="transaction">
+            <div class="service">
+                <div class="icon bg-purple-light">
+                    <span class="fa fa-calculator spancons"></span>
+                </div>
+                <div class="details">
+                    <h4>Last</h4>
+                    <p>{{i.after}}</p>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="card bg-success">
+                    <h3>{{i.timestamp|date:"m"}}</h3>
+                </div>
+                <div class="details">
+                    <p>Now</p>
+                    <small class="text-muted">{{i.now}}</small>
+                </div>
+            </div>
+            <h4>{{i.total}}</h4>
+        </div>
+        {% endfor %}
+
+        <!----------------------------- end transaction ------------------------------->
+        <!-- <div class="transaction">
+            <div class="service">
+                <div class="icon bg-purple-light">
+                    <span class="fa fa-home spancons"></span>
+                </div>
+                <div class="details">
+                    <h4>Music</h4>
+                    <p>6 Qaws 1401</p>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="card bg-success">
+                    <img src="./image/test.png" alt="">
+                </div>
+                <div class="details">
+                    <p>*3435</p>
+                    <small class="text-muted">Credit Card</small>
+                </div>
+            </div>
+            <h4>ف50</h4>
+        </div> -->
+        <!----------------------------- end transaction ------------------------------->
+        <!-- <div class="transaction">
+            <div class="service">
+                <div class="icon bg-purple-light">
+                    <span class="fa fa-home spancons"></span>
+                </div>
+                <div class="details">
+                    <h4>Music</h4>
+                    <p>6 Qaws 1401</p>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="card bg-primary">
+                    <img src="./image/test.png" alt="">
+                </div>
+                <div class="details">
+                    <p>*3435</p>
+                    <small class="text-muted">Credit Card</small>
+                </div>
+            </div>
+            <h4>ف50</h4>
+        </div> -->
+        <!----------------------------- end transaction ------------------------------->
+        <!-- <div class="transaction">
+            <div class="service">
+                <div class="icon bg-purple-light">
+                    <span class="fa fa-home spancons"></span>
+                </div>
+                <div class="details">
+                    <h4>Music</h4>
+                    <p>6 Qaws 1401</p>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="card bg-warning">
+                    <img src="./image/test.png" alt="">
+                </div>
+                <div class="details">
+                    <p>*3435</p>
+                    <small class="text-muted">Credit Card</small>
+                </div>
+            </div>
+            <h4>ف50</h4>
+        </div> -->
+        <!----------------------------- end transaction ------------------------------->
+    </div>
+    <!----------------------------- end transactions ---------------------------------->
+</section>
+{% endblock section_right %}
+
+{% block popupana %}
+<div id="popupana">
+    <div class="close_pup">
+        <a class="fa fa-window-close danger icons" onclick="analyticsToggle();"></a>
+    </div>
+    <h2 class="primary">Payments</h2>
+    <p>Submit finance transactions incom and payment.</p>
+    <div class="item_center">
+        <form action="{% url 'input_finance'%}" method="post">
+            {% csrf_token %}
+            <div class="form">
+                <input class="form_input" type="number" required name="money" placeholder="Amount">
+            </div>
+            <div class="form">
+                <input class="form_input" type="text" required name="datils" placeholder="Datils">
+            </div>
+            <div class="form">
+                <input class="btn-save" type="submit" value="Income" onclick="lockBtn(this)">
+            </div>
+        </form>
+        <form action="{% url 'output_finance'%}" method="post">
+            {% csrf_token %}
+            <div class="form">
+                <input class="form_input" type="number" required name="money" placeholder="Amount">
+            </div>
+            <div class="form">
+                <input class="form_input" type="text" required name="datils" placeholder="Datils">
+            </div>
+            <div class="form">
+                <input class="btn-save" type="submit" value="Pay" onclick="lockBtn(this)">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock popupana %}

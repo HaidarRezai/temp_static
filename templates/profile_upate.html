@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Student</h2>
+        <div class="information">
+            <form action="{% url 'doprofile-update'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name:" value="{{user.first_name}}">
+                <input type="text" name="last_name" placeholder="Last Name:" value="{{user.last_name}}">
+                <input type="text" name="email" placeholder="Email:" value="{{user.email}}">
+                <input type="text" name="username" placeholder="Username:" value="{{user.username}}">
+                <input type="text" name="password" placeholder="Fill Only if you Want to change password" value="">
+                <input type="file" name="profile_pic" name="image">
+                <select class="input" required name="dark_mood">
+                    <option value="true">Dark</option>
+                    <option value="false">Light</option>
+                </select>
+                <br>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

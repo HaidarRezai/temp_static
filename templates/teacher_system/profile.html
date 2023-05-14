@@ -1,0 +1,188 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'teacher-system'%}" class="icon-a">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'my-profile'%}" class="icon-a active">
+            <span class="fa fa-users icons"></span>
+            <h3>My Classes</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Log out</h3>
+        </a>
+    </div>
+</aside>
+{% endblock aside %}
+
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="information"> 
+        <div class="select-class">
+            <h3 class="primary">Search Box!</h3>
+            <p>You can search by ClassID, Class Name.</p>
+            <br>
+            <form action="{% url 'my-profile'%}" method="post">
+            {% csrf_token %}
+            <input type="search" required name="search" placeholder="Search Class">
+            <input type="submit" value="Search">
+            </form>
+        </div> 
+    </div>
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>Class ID</th>
+                    <th>department</th>
+                    <th>Time</th>
+                    <th>Salary</th>
+                    {% comment %} <th>Remainder</th> {% endcomment %}
+                    <th>Starting Date</th>
+                    <th>Ending Date</th>
+                </rt>
+
+                {% for i in group_teacher %}
+                <tr>
+                    <td>{{i.id_group.id}}</td>
+                    <td>
+                        <a href="{% url 'my-class' i.id_group.id %}">
+                            {% if i.id_group.active == '1'%}<span class="fa fa-circle icons active"></span>
+                            {% else %}<span class="fa fa-circle icons danger"></span>
+                            {% endif %}
+                            {{i.id_group.subject}}
+                        </a>
+                    </td>
+                    <td>{{i.id_group.start_time}}</td>
+                    <td class="success"><a>{{i.pay.salary}}</a></td>
+                    {% comment %} <td class="danger">{{i.pay.baqiyat}}</td> {% endcomment %}
+                    {% comment %} <td class="danger">{{i.pay.pish_pay}}</td> {% endcomment %}
+                    <td>{{i.id_group.start_date|date:"D d M Y" }}</td>
+                    <td class="warning">{{i.id_group.end_date|date:"D d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if group_teacher.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ group_teacher.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ group_teacher.number }}</a> <a>of</a>
+                    <a>{{ group_teacher.paginator.num_pages }}</a>
+                </span>
+
+                {% if group_teacher.has_next %}
+                <a href="?page={{ group_teacher.next_page_number }}">next</a>
+                <a href="?page={{ group_teacher.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</main>
+{% endblock main %}
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Info</h2>
+        <div class="updates">
+            <div class="update">
+                <div class="profile-photo">
+                    {% if user.profile_pic == "" %}
+                    {% load static %}
+                    <img src="{% static './image/profile_user.png'%}">
+                    {% else %}
+                    <img src="/{{user.profile_pic}}">
+                    {% endif %}
+                </div>
+                <div class="message">
+                    <p><b>{{user.first_name}} {{user.last_name}}</b></p>
+                    <small class="text-muted">Email: {{user.email}}<br></small>
+                    <small class="text-muted">Education: {{user.teacher.degree_edu}}<br></small>
+                    <small class="text-muted">Last Login: {{user.last_login|date:"h:i A"}}<br></small>
+                    <small class="text-muted">Register at: {{user.date_joined|date:"D d M Y"}}<br></small>
+                    <br>
+                    {% if user.zinaf %}
+                    <a href="{% url 'request-payment' %}" class="btn">Your acount</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Analysis of Students</h2>
+
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>STUDENT</h3>
+                    <small class="text-muted">Your Students</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted"></small>
+                </div>
+                <h5 class="success">+{{prese_group}}%</h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted"></small>
+                </div>
+                <h5 class="success">+{{prese_fees}}%</h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+
+
+    </div>
+</div>
+{% endblock right %}

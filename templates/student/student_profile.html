@@ -1,0 +1,329 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <!-- <div class="information">
+        <details class="dropdown">
+            <div class="comments">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <p>"{{student.first_name}}" Registerd at {{student.timestamp}}".</p>
+                    <br>
+                    <textarea class="details_stu style" rows="30" name="comment">{{student.comment}}</textarea>
+                    <input type="hidden" name="id" value="{{student.id}}">
+                    <input type="hidden" name="comment_type" value="student_comment">
+                    <br>
+                    <button class="btn_details">Set change</button>
+                </form>
+            </div>
+        </details>
+        <div class="inline">
+            <div class="user-photo">
+                {% if student.student_pic == "" %}
+                {% load static %}
+                <img src="{% static './image/profile_user.png'%}">
+                {% else %}
+                <img src="/{{student.student_pic}}">
+                {% endif %}
+            </div>
+            <div class="info-student">
+                <h3>ID:<span class="success"> {{ student.id }}</span></h3>
+                <h3>Full Name: <span class="primary">{{student.first_name}}&nbsp;{{student.last_name}}</span></h3>
+                <h3>Father Name: <span class="primary">{{student.father_name}}</span> </h3>
+                {% if student.phone_one %}
+                <h3>Phone #: <span class="success">{{student.phone_one}} / {{student.phone_tow}}</span></h3>
+                {% endif %}
+                {% if student.education_student.level %}
+                <h3>Education: <span class="success">{{student.education_student.level}}</span> </h3>
+                {% endif %}
+                {% if student.education_student.form %}
+                <h3>From / In: <span class="success">{{student.education_student.form}}</span> </h3>
+                {% endif %}
+                {% if student.job %}
+                <h3>Job: <span class="success">{{student.job}}</span> </h3>
+                {% endif %}
+            </div>
+            <div class="info-student">
+                {% comment %} <h3>Chick-in: <span class="success">{{student.timestamp}}</span></h3> {% endcomment %}
+                {% if student.address_student.province_one %}
+                <h3>Main Province: <span class="success">{{student.address_student.province_one}}</span> </h3>
+                {% endif %}
+                {% if student.address_student.village_one %}
+                <h3>Main District: <span class="success">{{student.address_student.village_one}}</span> </h3>
+                {% endif %}
+                {% if student.address_student.province_tow %}
+                <h3>Current Province: <span class="success">{{student.address_student.province_tow}}</span> </h3>
+                {% endif %}
+                {% if student.address_student.village_tow %}
+                <h3>Current District: <span class="success">{{student.address_student.village_tow}}</span> </h3>
+                {% endif %}
+                {% if student.idcard %}
+                <h3>NIC NO#: <span class="success">{{student.idcard}}</span> </h3>
+                {% endif %}
+                {% if student.address_student.new_address %}
+                <h4>Address: <span class="success">{{student.address_student.new_address}}</span></h4>
+                {% endif %}
+            </div>
+        </div>
+    </div> -->
+    <div class="item_center">
+        <div class="information item_center">
+            
+        </div>
+        <div class="information">
+            <div class="input-add">
+                <div class="select-class">
+                    <h3 class="primary">Register Class!</h3>
+                    <br>
+                    <div onclick="itemToggle('English');" class="register_btn" style="display: inline-block">
+                        <h3>English</h3>
+                    </div>
+                    <div onclick="itemToggle('Computer');" class="register_btn" style="display: inline-block">
+                        <h3>Computer</h3>
+                    </div>
+                    <div onclick="itemToggle('Chains');" class="register_btn" style="display: inline-block">
+                        <h3>Chinese</h3>
+                    </div>
+                    <div onclick="itemToggle('French');" class="register_btn" style="display: inline-block">
+                        <h3>French</h3>
+                    </div>
+                    <div onclick="itemToggle('Almany');" class="register_btn" style="display: inline-block">
+                        <h3>German</h3>
+                    </div> 
+                    {% include 'student/subjects/english.html' %}
+                    {% include 'student/subjects/computer.html' %}
+                    {% include 'student/subjects/french.html' %}
+                    {% include 'student/subjects/chains.html' %}
+                    {% include 'student/subjects/almany.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID Class</th>
+                    <th>Subject</th>
+                    <th>Start Time</th>
+                    <th>Pyment</th>
+                    <th>Remainder</th>
+                    <th>Discount</th>
+                    <th>Start Date</th>
+                    <th>Details</th>
+                    <th>More</th>
+                </rt>
+
+                {% for i in group %}
+                <tr>
+                    <td>{{i.id_group.id}}</td>
+                    <td><a href="{% url 'class-info' i.id_group.id %}">
+                            {% if i.id_group.active == '1'%}<span class="fa fa-circle icons active"></span>
+                            {% else %}<span class="fa fa-circle icons danger"></span>
+                            {% endif %}
+                            {{i.id_group.subject}}</a>
+                    </td>
+                    <td>{{i.id_group.start_time}}</td>
+                    <td class="success"><a>{{i.fees.fees}} AFG</a></td>
+                    <td class="danger">{{i.fees.baqi}} AFG</td>
+                    <td class="danger">{{i.fees.descount}}%</td>
+                    <td>{{i.id_group.start_date|date:"Y-m-d"}}</td>
+                    <td>
+                        <details class="dropdown">
+                            <div class="comments">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <p>"{{student.first_name}}" Register in this class at {{i.timestamp}} by
+                                        "{{i.fees.by.first_name}} {{i.fees.by.last_name}}".</p>
+                                    <br>
+                                    <textarea class="details_stu" rows="8" name="comment">{{i.comment}}</textarea>
+                                    <input type="hidden" name="id" value="{{i.id}}">
+                                    <input type="hidden" name="comment_type" value="class_comment">
+                                    <button class="btn_details">Set change</button>
+                                </form>
+                            </div>
+                        </details>
+                    </td>
+                    <td class="primary"><a href="{% url 'student-class_info' i.id %}">More</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if group.has_previous %}
+                <a href="?page={{ group.previous_page_number }}"><span class="fa fa-chevron-left spancons"></span></a>
+                {% endif %}
+
+                {% for i in group.paginator.page_range %}
+                {% if group.number == i %}
+                <a class="active">{{i}}</a>
+                {% else %}
+                <a href="?page={{ i }}">{{i}}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if group.has_next %}
+                <a href="?page={{ group.next_page_number }}"><span class="fa fa-chevron-right spancons"></span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Select Class</h2>
+    <div class="updates">
+        <div class="profile_student">
+            <div class="user-photo right_site">
+                {% if student.student_pic == "" %}
+                {% load static %}
+                <img src="{% static './image/profile_user.png'%}">
+                {% else %}
+                <img src="/{{student.student_pic}}">
+                {% endif %}
+            </div>
+            <div class="info-student">
+                <p>ID:<span class="success"> {{ student.id }}</span></p>
+                <p class="primary">{{student.first_name}}&nbsp;{{student.last_name}}</p>
+                <p>F/N<span class="primary">{{student.father_name}}</span> </p>
+                {% if student.phone_one %}
+                <p>Phone #: <span class="success">{{student.phone_one}} / {{student.phone_tow}}</span></p>
+                {% endif %}
+            </div>
+        </div>
+        <details class="dropdown">
+            
+            <summary>More information <span class="fa fa-angle-down icons"></span></summary>
+            <div class="info-student">
+                {% if student.education_student.level %}
+                <p>Education: <span class="success">{{student.education_student.level}}</span> </p>
+                {% endif %}
+                {% if student.education_student.form %}
+                <p>From / In: <span class="success">{{student.education_student.form}}</span> </p>
+                {% endif %}
+                {% if student.job %}
+                <p>Job: <span class="success">{{student.job}}</span> </p>
+                {% endif %}
+                {% comment %} <p>Chick-in: <span class="success">{{student.timestamp}}</span></p> {% endcomment %}
+                {% if student.address_student.province_one %}
+                <p>Main Province: <span class="success">{{student.address_student.province_one}}</span> </p>
+                {% endif %}
+                {% if student.address_student.village_one %}
+                <p>Main District: <span class="success">{{student.address_student.village_one}}</span> </p>
+                {% endif %}
+                {% if student.address_student.province_tow %}
+                <p>Current Province: <span class="success">{{student.address_student.province_tow}}</span> </p>
+                {% endif %}
+                {% if student.address_student.village_tow %}
+                <p>Current District: <span class="success">{{student.address_student.village_tow}}</span> </p>
+                {% endif %}
+                {% if student.idcard %}
+                <p>NIC NO#: <span class="success">{{student.idcard}}</span> </p>
+                {% endif %}
+                {% if student.address_student.new_address %}
+                <h4>Address: <span class="success">{{student.address_student.new_address}}</span></h4>
+                {% endif %}
+            </div>
+        </details>
+        <div class="btns">
+            <a class="btnu" href="{% url 'svc' student.id %}">Cart</a>
+            <a class="btnu" href="{% url 'student-update' student.id %}">Update</a>
+            <a class="btnd" href="{% url 'student-delete' student.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+{% block incom %}
+<a href="{% url 'student-new' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-user-plus icons"></span>
+            <h3>Register Student</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+{% block analytics %}
+<div class="sales-analytics">
+    <h2>Finance Analytics</h2>
+    <div class="item offline" onclick="analyticsToggle();">
+        <div class="icon">
+            <span class="fa fa-coins icons"></span>
+        </div>
+        <div class="right">
+            <div class="info">
+                <h3>Payment</h3>
+                <small class="text-muted">{{student.acount_stu.datils}}</small>
+            </div>
+            <h3 class="success">{{student.acount_stu.amount}} AFN</h3>
+        </div>
+    </div>
+    <div class="item online" onclick="popup_oneToggle();">
+        <div class="icon">
+            <span class="fa fa-chart-pie icons"></span>
+        </div>
+        <div class="right">
+            <div class="info">
+                <h3>Remainder</h3>
+                <small class="text-muted">Total Remainder</small>
+            </div>
+            {% comment %} <h5 class="success">+{{remainder}}</h5> {% endcomment %}
+            <h3 class="danger">{{remainder}} AFN</h3>
+        </div>
+    </div>
+    <div class="item customers">
+        <div class="icon">
+            <span class="fa fa-chart-bar icons"></span>
+        </div>
+        <div class="right">
+            <div class="info">
+                <h3>{{student.job}}</h3>
+                <small class="text-muted">{{student.timestamp}}</small>
+            </div>
+            {% comment %} <h5 class="success">+30%</h5> {% endcomment %}
+            <h3>Total fee {{to_fees}} AFG</h3>
+        </div>
+    </div>
+</div>
+<div id="popupana">
+    <div class="close_pup">
+        <a class="fa fa-window-close danger icons" onclick="analyticsToggle();"></a>
+    </div>
+    <h2 class="primary">Your Acount</h2>
+    <p>your acounting in this page </p>
+    <br>
+    {% if student.acount_stu.amount > 1 %}
+    <div class="input-add">
+        <form action="{% url 'acount-stu' %}" method="post">
+            {% csrf_token %}
+            <input type="number" min="0" required name="amount" placeholder="Enter Amount">
+            <input type="text" required name="id_student" hidden value="{{student.id}}">
+            <br>
+            <input type="submit" value="Take">
+        </form>
+    </div>
+    {% else %}
+    <h2 class="danger">You don't have amount in your acount</h2>
+    {% endif %}
+    <br>
+    <h2 class="primary">Your Charge</h2>
+    <p>Your Can Charge your class fee </p>
+    <br>
+    <div class="input-add">
+        <form action="{% url 'charge-stu' %}" method="post">
+            {% csrf_token %}
+            <input type="number" min="0" required name="amount" placeholder="Enter Amount Charge">
+            <input type="text" required name="id_student" hidden value="{{student.id}}">
+            <br>
+            <input type="submit" value="Charge">
+        </form>
+    </div>
+</div>
+{% endblock analytics %}

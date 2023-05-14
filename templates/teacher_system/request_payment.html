@@ -1,0 +1,184 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+{% if user.user_type == '4' %}
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'teacher-system'%}" class="icon-a active">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'my-profile'%}" class="icon-a">
+            <span class="fa fa-users icons"></span>
+            <h3>My Classes</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Log out</h3>
+        </a>
+    </div>
+</aside>
+{% else %}
+
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'home'%}" class="icon-a active">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'class'%}" class="icon-a">
+            <span class="fa fa-book-open  icons"></span>
+            <h3>Add Class</h3>
+        </a>
+        <a href="{% url 'qars'%}" class="icon-a">
+            <span class="fa fa-money-bill-alt icons"></span>
+            <h3>Remainder</h3>
+        </a>
+        <a href="{% url 'exam' %}" class="icon-a">
+            <span class="fa fa-book-reader icons"></span>
+            <h3>Exam</h3>
+        </a>
+        <a href="{% url 'student'%}" class="icon-a">
+            <span class="fa fa-users icons"></span>
+            <h3>All Students</h3>
+        </a>
+        <a href="{% url 'teacher'%}" class="icon-a">
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>View Teacher</h3>
+        </a>
+        <a href="{% url 'acounting'%}" class="icon-a">
+            <span class="fa fa-coins icons"></span>
+            <h3>Acounting</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Logout</h3>
+        </a>
+    </div>
+</aside>
+{% endif %}
+{% endblock aside %}
+
+{% block incom %}
+
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+         
+        <h2>Request Mony form Manager</h2>
+        <div class="information">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3 class="success">Total amount in course <b class="primary">{{total_account.total_account}}</b><h3>
+                <input type="number" required min="0" name="amount" placeholder="Amount"><br>
+                <textarea name="comment" cols="30" rows="15"></textarea><br>
+                <input type="hidden" required name="zinaf_id" value="{{user.zinaf.id}}"><br>
+                <input type="submit" value="Pay">
+            </form>
+        </div>
+        <br>
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID</th>
+                    <th>Amount</th>
+                    <th>Comment</th>
+                    <th>Date of Pay</th>
+                    <th>Pay</th>
+                </rt>
+                {% for i in request_me %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td class="primary">{{i.amount}}</td>
+                    <td class="danger">{{i.comment}}</td>
+                    <td>{{i.timestamp|date:"D d M Y" }}</td>
+                    {% if i.accept_requestzinaf.pay %}
+                    <td class="success"><span class="fa fa-check icons"></span></td>
+                    {% else %}
+                    <td class="primary"><a href="{% url 'request-paymentDelete' i.id %}" class="danger" style="width:3.3rem;">Delete</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if request_me.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ request_me.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ request_me.number }}</a> <a>of</a> <a>{{ request_me.paginator.num_pages }}</a>
+                </span>
+
+                {% if request_me.has_next %}
+                <a href="?page={{ request_me.next_page_number }}">next</a>
+                <a href="?page={{ request_me.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Pay Salary</h2>
+    <div class="updates">
+        <div class="update">
+            <div class="profile-photo">
+                {% if user.profile_pic == "" %}
+                {% load static %}
+                <img src="{% static './image/profile_user.png'%}">
+                {% else %}
+                <img src="/{{user.profile_pic}}">
+                {% endif %}
+            </div>
+            <div class="message">
+                <p><b>{{user.first_name}} {{user.last_name}}</b></p>
+                <small class="text-muted">Email: {{user.email}}<br></small>
+                <small class="text-muted">Education: {{user.teacher.degree_edu}}<br></small>
+                <small class="text-muted">Last Login: {{user.last_login|date:"h:i A"}}<br></small>
+                <small class="text-muted">Register at: {{user.date_joined|date:"D d M Y"}}<br></small>
+                <br>
+                {% if user.zinaf %}
+                <a href="{% url 'request-payment' %}" class="btn">You acount</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}

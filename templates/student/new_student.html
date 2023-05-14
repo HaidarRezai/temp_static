@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Student</h2>
+        <div class="information">
+             
+
+            <form action="{% url 'student-add'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% comment %} <input type="file" name="student_pic"> {% endcomment %}
+                <input type="text" required name="first_name" placeholder="First Name:"><br>
+                <input type="text" required name="last_name" placeholder="Last Name:"><br>
+                <input type="text" required name="father_name" placeholder="Father Name:"><br>
+
+                {% comment %} <input type="text" required name="idcard" placeholder="NIC NO#:">
+                <input type="text" required name="job" placeholder="Job:">
+                <input type="text" required name="phone_one" placeholder="Phone #1:">
+                <input type="text" required name="phone_tow" placeholder="Phone #2:">
+                <input type="text" required name="province_one" placeholder="Main Province:">
+                <input type="text" required name="village_one" placeholder="Main District:">
+                <input type="text" required name="province_tow" value="Kabul" placeholder="Current Province:">
+                <input type="text" required name="village_tow" value="13th District" placeholder="Current District:">
+                <textarea name="new_address">Home Address:</textarea> {% endcomment %}
+
+                {% comment %} <input type="text" required name="form" placeholder="From"> {% endcomment %}
+                <br>
+                <input type="submit" value="Register" onclick="lockBtn(this)">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

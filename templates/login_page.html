@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kabul-Cambridge</title>
+    <link rel="stylesheet" href="{% static 'css/login_page.css'%}">
+</head>
+
+<body>
+    {% include 'alert.html' %}
+    <main>
+        <div class="login_page">
+            <div>
+                <div class="spaner right"></div>
+                <div class="spaner"></div>
+            </div>
+            <div class="login_insite">
+                {% load static %}
+                <div class="logo">
+                    <img src="{% static './image/logo.png'%}">
+                </div>
+                <h2>Kabul-Cambridge</h2>
+                <div class="login_input">
+                    <form action="{% url 'dologin' %}" method="post" class="post_form">
+                        {% csrf_token %}
+                        <div class="form">
+                            <input class="form_input" name="email" id="email" type="text"
+                                placeholder=" ">
+                            <label class="form_label" for="email">Email</label>
+                        </div>
+                        <div class="form">
+                            <input class="form_input" name="password" id="password" type="password"
+                                placeholder=" ">
+                            <label class="form_label" for="password">Password</label>
+                        </div>
+                        <button class="btn-save">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Teacher</h2>
+        <div class="information">
+            <form action="{% url 'assistant-save'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" required name="first_name" placeholder="First Name:">
+                <input type="text" required name="last_name" placeholder="Last Name:">
+                <input type="text" required name="father_name" placeholder="Father Name:">
+                <input type="email" required name="email" placeholder="Email:">
+                <input type="text" required name="username" placeholder="Username:">
+                <input type="password" required name="password" placeholder="Password">
+                <input type="text" required name="phone" placeholder="Phone #1:">
+                <input type="text" required name="phone_tow" placeholder="Phone #2:">
+                <select name="degree_edu" required>
+                    <option>Degree Edu</option>
+                    <option value="School">School</option>
+                    <option value="Bachelor">Bachelor</option>
+                    <option value="Master">Master</option>
+                    <option value="PHD">PHD</option>
+                </select>
+                <input type="text" required name="idcord" placeholder="NIC #:">
+                <textarea name="address_one" required id="">Main Address:</textarea>
+                <textarea name="address_tow" required id="">Current Address:</textarea>
+                <input type="file" required name="profile_pic">
+                <br>
+                <input type="submit" value="Register">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+{% block incom %}
+<a href="{% url 'assistant-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Assistant</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

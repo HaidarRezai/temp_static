@@ -1,0 +1,155 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+    <aside>
+        <div class="top">
+            <div class="logo">
+                {% load static %}
+                <img src="{% static './image/logo.png'%}">
+                <h2>BAH<span class="danger">AR</span></h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-icons-sharp">&#9776;</span>
+            </div>
+        </div>
+        <div class="sidebar">
+            <a href="{% url 'teacher-system'%}" class="icon-a active">
+                <span class="fa fa-home spancons"></span>
+                <h3>Home</h3>
+            </a>
+            <a href="{% url 'my-profile'%}" class="icon-a">
+                <span class="fa fa-users icons"></span>
+                <h3>My Class</h3>
+            </a>
+            <a href="{% url 'logout' %}" class="icon-a">
+                <span class="fa fa-sign-out-alt icons"></span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+{% endblock aside %}
+
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}
+
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    {% for i in present %}
+                    <th>{{i.timestamp|date:"d" }}</th>
+                    {% endfor %}
+                </rt>
+
+
+                <tr>
+                    {% for i in present %}
+                    {% if i.present %}
+                    <td class="success"><span class="fa fa-check icons"></span></td>
+                    {% else %}
+                    <td class="danger"><span class="fa fa-times icons"></span></td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+
+
+                <tr>
+                    {% if group.has_previous %}
+                    <td><a class="btn_next" href="?page=1">&laquo; first</a></td>
+                    <td><a class="btn_next" href="?page={{ group.previous_page_number }}">previous</a></td>
+                    {% endif %}
+
+                    <td>
+                        <span class="current next">
+                            Page {{ group.number }} of {{ group.paginator.num_pages }}.
+                        </span>
+                    </td>
+                    {% if group.has_next %}
+                    <td><a class="btn_next" href="?page={{ group.next_page_number }}">next</a></td>
+                    <td><a class="btn_next" href="?page={{ group.paginator.num_pages }}">last &raquo;</a></td>
+                    {% endif %}
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+        <a href="#">Show All</a>
+    </div>
+</main>
+{% endblock main %}
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Analysis of Students</h2>
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>STUDENT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_group}}%</h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_fees}}%</h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+    </div>
+</div>
+{% endblock right %}
+

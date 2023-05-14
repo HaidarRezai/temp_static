@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Update {% for i in teacher %}{{ i.admin.first_name }} {{i.admin.last_name}}{% endfor %}</h2>
+        <div class="information">
+             
+
+            <form action="{% url 'teacher-doupdate'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="first_name" value="{% for i in teacher %}{{ i.admin.first_name }}{% endfor %}"
+                    placeholder="First Name:">
+                <input type="text" name="last_name" value="{% for i in teacher %}{{ i.admin.last_name }}{% endfor %}"
+                    placeholder="Last Name:">
+                <input type="text" name="father_name" value="{% for i in teacher %}{{ i.father_name }}{% endfor %}"
+                    placeholder="Father Name:">
+                <input type="email" name="email" value="{% for i in teacher %}{{ i.admin.email }}{% endfor %}"
+                    placeholder="Email:">
+                <input type="text" name="username" value="{% for i in teacher %}{{ i.admin.username }}{% endfor %}"
+                    placeholder="Username:">
+                <input type="password" name="password" placeholder="Fill Only if you Want to change password">
+                <input type="text" name="phone" value="{% for i in teacher %}{{ i.phone_one }}{% endfor %}"
+                    placeholder="Phone #1:">
+                <input type="text" name="phone_tow" value="{% for i in teacher %}{{ i.phone_tow }}{% endfor %}"
+                    placeholder="Phone #2:">
+                <select name="degree_edu" required>
+                    <option value="None">---- {% for i in teacher %}{{ i.degree_edu }}{% endfor %} ----</option>
+                    <option value="School">School</option>
+                    <option value="Bachelor">Bachelor</option>
+                    <option value="Master">Master</option>
+                    <option value="PHD">PHD</option>
+                </select>
+                <input type="text" name="idcord" value="{% for i in teacher %}{{ i.idcord }}{% endfor %}"
+                    placeholder="NIC #:">
+                <select class="input" required name="department">
+                    <option value="None">---- {% for i in teacher %}{{ i.department }}{% endfor %} ----</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Prep 1">Prep 1</option>
+                    <option value="Prep 2">Prep 2</option>
+                    <option value="Prep 3">Prep 3</option>
+                    <option value="Intro">Intro</option>
+                    <option value="EAP 1">EAP 1</option>
+                    <option value="EAP 2">EAP 2</option>
+                    <option value="EAP 3">EAP 3</option>
+                    <option value="EAP 4">EAP 4</option>
+                    <option value="EAP 5">EAP 5</option>
+                    <option value="FST">FST</option>
+                    <option value="TOEFL">TOEFL</option>
+                    <option value="Specil Speaking">Specil Speaking</option>
+                    <option value="Academic Writing">Academic Writing</option>
+                    <option value="Special Kids">Special Kids</option>
+                    <option value="Special Grammar">Special Grammar</option>
+                    <option value="Special Class">Special Class</option>
+                </select>
+                <input type="file" name="profile_pic">
+                <input type="text" name="teacher_id" hidden value="{% for i in teacher %}{{ i.admin.id }}{% endfor %}">
+                <textarea name="address_one" id="">{% for i in teacher %}{{ i.address_one }}{% endfor %}</textarea>
+                <textarea name="address_tow" id="">{% for i in teacher %}{{ i.address_tow }}{% endfor %}</textarea>
+                <br>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Teacher</h2>
+        <div class="information">
+            <form action="{% url 'teacher-save'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" required name="first_name" placeholder="First Name:">
+                <input type="text" required name="last_name" placeholder="Last Name:">
+                <input type="text" required name="father_name" placeholder="Father Name:">
+                <input type="email" required name="email" placeholder="Email:">
+                <input type="text" required name="username" placeholder="Username:">
+                <input type="password" required name="password" placeholder="Password">
+                <input type="text" required name="phone" placeholder="Phone #1:">
+                <input type="text" required name="phone_tow" placeholder="Phone #2:">
+                <select name="degree_edu" required>
+                    <option>Degree Edu</option>
+                    <option value="School">School</option>
+                    <option value="Bachelor">Bachelor</option>
+                    <option value="Master">Master</option>
+                    <option value="PHD">PHD</option>
+                </select>
+                <input type="text" required name="idcord" placeholder="NIC #:">
+                <select class="input" required name="department">
+                    <option>---- Select department ----</option>
+                    <option value="English">English</option>
+                    <option value="Computer">Computer</option>
+                    <option value="Almany">Almany</option>
+                    <option value="Chains">Chains</option>
+                    <option value="French">French</option>
+                </select>
+                <input type="file" required name="profile_pic">
+                <textarea name="address_one" placeholder="Main Address:" required id=""></textarea>
+                <textarea name="address_tow" placeholder="Current Address:" required id=""></textarea>
+                <br>
+                <input type="submit" value="Register" onclick="lockBtn(this)">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

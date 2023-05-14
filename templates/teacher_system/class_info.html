@@ -1,0 +1,372 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+    <aside>
+        <div class="top">
+            <div class="logo">
+                {% load static %}
+                <img src="{% static './image/logo.png'%}">
+                <h2>BAH<span class="danger">AR</span></h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-icons-sharp">&#9776;</span>
+            </div>
+        </div>
+        <div class="sidebar">
+            <a href="{% url 'teacher-system'%}" class="icon-a">
+                <span class="fa fa-home spancons"></span>
+                <h3>Home</h3>
+            </a>
+            <a href="{% url 'my-profile'%}" class="icon-a active">
+                <span class="fa fa-users icons"></span>
+                <h3>My Class</h3>
+            </a>
+            <a href="{% url 'logout' %}" class="icon-a">
+                <span class="fa fa-sign-out-alt icons"></span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+{% endblock aside %}
+
+<!--------------- END OF ASIDE ---------------->
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="information">
+        {% if group_student.id_group.subject == 'Starter' or group_student.id_group.subject == 'Prep 1' or group_student.id_group.subject == 'Prep 2' or group_student.id_group.subject == 'Prep 3' %}
+            <table style="width:100%">
+                <tr>
+                    <th>Middle</th>
+                    <th>Final</th>
+                    <th>Activate</th>
+                    <th>Homework</th>
+                    <th>Final Total</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td>{{group_student.priClass.score}}</td>
+                    <td>{{group_student.priClass.final_score}}</td>
+                    <td>{{group_student.priClass.activate}}</td>
+                    <td>{{group_student.priClass.home_work}}</td>
+                    <td>{{group_student.priClass.total}} / 100</td>
+                    <td>{{group_student.priClass.result}}</td>
+                </tr>
+            </table>
+        <div class="inline">
+            {% if group_student.score %}
+            <form action="{% url 'updateScoreStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="number" required hidden value="{{group_student.id}}" name="group_student">
+                <input type="number" min="1" max="40" value="{{group_student.priClass.score}}"
+                    name="score" placeholder="Middle Score">
+                <br>
+                <input type="number" max="40" value="{{group_student.priClass.final_score}}"
+                    name="final_score" placeholder="Final Score">
+                <br>
+                <input type="number" max="10" value="{{group_student.priClass.activate}}"
+                    name="activate" placeholder="Activate Class">
+                <br>
+                <input type="number" max="10" value="{{group_student.priClass.home_work}}" name="home_work"
+                    placeholder="Home Work">
+                <br>
+                <input type="submit" value="Update Score">
+            </form>
+            {% else %}
+            <form action="{% url 'setScoreStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="group_student" hidden value="{{group_student.id}}">
+
+                <input type="number" min="1" max="40" name="score" placeholder="Middle Score">
+                <br>
+                <input type="number" max="40" name="final_score" placeholder="Final Score">
+                <br>
+                <input type="number" max="10" name="activate" placeholder="Activate Class">
+                <br>
+                <input type="number" max="10" name="home_work" placeholder="Home Work">
+                <br>
+                <input type="submit" value="Set Score">
+            </form>
+            {% endif %}
+        </div>
+        {% else %}
+        <table style="width:100%">
+            <tr>
+                <th>Skill</th>
+                <th>Middle</th>
+                <th>Final</th>
+                <th>Total</th>
+                <th>Final Total</th>
+                <th>Result</th>
+            </tr>
+            <tr>
+
+                <td>Reading {{group_student.middleScore}}</td>
+                <td>{{group_student.middle_reading.reading}}</td>
+                <td>{{group_student.final_reading.reading}}</td>
+                <td>{{group_student.proClass.tot_rea}}</td>
+            </tr>
+            <tr>
+                <td>Writing</td>
+                <td>{{group_student.middle_writing.writing}}</td>
+                <td>{{group_student.final_writing.writing}}</td>
+                <td>{{group_student.proClass.tot_wri}}</td>
+                <td>{{group_student.proClass.total}} / 120</td>
+                <td>{{group_student.proClass.result}}</td>
+            </tr>
+            <tr>
+                <td>Listening</td>
+                <td>{{group_student.middle_listening.listening}}</td>
+                <td>{{group_student.final_listening.listening}}</td>
+                <td>{{group_student.proClass.tot_lis}}</td>
+            </tr>
+            <tr>
+                <td>Spesking</td>
+                <td>{{group_student.middle_speaking.speaking}}</td>
+                <td>{{group_student.final_speaking.speaking}}</td>
+                <td>{{group_student.proClass.tot_spe}}
+            </tr>
+        </table>
+        <div class="inline">
+            {% if group_student.middle_reading %}
+            <form action="{% url 'updMidSkiStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="group_student" hidden value="{{group_student.id}}">
+                <input type="number" maxlength="2" min="1" max="15" name="reading"
+                    value="{{group_student.middle_reading.reading}}" placeholder="Reading For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="writing"
+                    value="{{group_student.middle_writing.writing}}" placeholder="Writing For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="listening"
+                    value="{{group_student.middle_listening.listening}}" placeholder="Listening For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="speaking"
+                    value="{{group_student.middle_speaking.speaking}}" placeholder="Spesking For Middle">
+                <br>
+                <input type="submit" value="Update Score">
+            </form>
+            {% if group_student.final_reading %}
+            <form action="{% url 'updFinSkiStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="group_student" hidden value="{{group_student.id}}">
+                <input type="number" min="1" max="15" name="reading"
+                    value="{{group_student.final_reading.reading}}" placeholder="Reading For Final">
+                <br>
+                <input type="number" min="1" max="15" name="writing"
+                    value="{{group_student.final_writing.writing}}" placeholder="Writing For Final">
+                <br>
+                <input type="number" min="1" max="15" name="listening"
+                    value="{{group_student.final_listening.listening}}" placeholder="Listening For Final">
+                <br>
+                <input type="number" min="1" max="15" name="speaking"
+                    value="{{group_student.final_speaking.speaking}}" placeholder="Spesking For Final">
+                <br>
+                <input type="submit" value="Update Score">
+            </form>
+            {% else %}
+            <form action="{% url 'finalSkillStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="group_student" hidden value="{{group_student.id}}">
+                <input type="number" min="1" max="15" name="reading" placeholder="Reading For Final">
+                <br>
+                <input type="number" min="1" max="15" name="writing" placeholder="Writing For Final">
+                <br>
+                <input type="number" min="1" max="15" name="listening" placeholder="Listening For Final">
+                <br>
+                <input type="number" min="1" max="15" name="speaking" placeholder="Spesking For Final">
+                <br>
+                <input type="submit" value="Set Score">
+            </form>
+            {% endif %}
+            {% else %}
+            <form action="{% url 'middleSkillStudent' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="group_student" hidden value="{{group_student.id}}">
+                <input type="number" maxlength="2" min="1" max="15" name="reading"
+                    placeholder="Reading For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="writing"
+                    placeholder="Writing For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="listening"
+                    placeholder="Listening For Middle">
+                <br>
+                <input type="number" maxlength="2" min="1" max="15" name="speaking"
+                    placeholder="Spesking For Middle">
+                <br>
+                <input type="submit" value="Set Score">
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+        <a href="{% url 'my-class' group_student.id_group.id %}">
+            <span class="fa fa-arrow-left icons"></span>
+        </a>
+    </div>
+    <section id="my-section">
+        <div class="self_info">
+            <p class="sinfo_sheet">This is to certify that Mr/Ms:</p>
+            <p  class="sname_sheet">{{group_student.id_student.first_name}}&nbsp;{{group_student.id_student.last_name}}</p>
+            <p class="sinfo_sheet">
+                has completed <b>{{group_student.id_group.subject}}</b> offered from <b>{{group_student.id_group.start_date|date:"M Y"}}</b>
+                to <b>{{group_student.id_group.end_date|date:"M Y"}}</b> at
+                Amazon English<br> Academy. He/She has scored the following marks over all the course.
+            </p>
+        </div>
+        <div class="inline">
+            {% if group_student.id_group.subject == 'Starter' or group_student.id_group.subject == 'Prep 1' or group_student.id_group.subject == 'Prep 2' or group_student.id_group.subject == 'Prep 3' %}
+            <table style="width:80%">
+                <tr>
+                    <th class="th_sheet">Middle</th>
+                    <th class="th_sheet">Final</th>
+                    <th class="th_sheet" style="font-size: 0.8rem;">Class Activity</th>
+                    <th class="th_sheet" style="font-size: 0.8rem;">Homework</th>
+                    <th class="th_sheet">Total</th>
+                    <th class="th_sheet">Result</th>
+                </tr>
+                <tr>
+                    <td class="td_sheet">{{group_student.priClass.score}}</td>
+                    <td class="td_sheet">{{group_student.priClass.final_score}}</td>
+                    <td class="td_sheet">{{group_student.priClass.activate}}</td>
+                    <td class="td_sheet">{{group_student.priClass.home_work}}</td>
+                    <td class="td_sheet">{{group_student.priClass.total}}/100</td>
+                    <td class="td_sheet">{{group_student.priClass.result}}</td>
+                </tr>
+            </table>
+            <div class="qrcode">
+                {% load static %}
+                <img src="{% static './image/amazonQR.png'%}">
+            </div>
+        </div>
+        <div style="margin-top: 3rem;" class="inline">
+            <p style="margin-right:22rem; margin-left: 5rem; padding: 0.5rem; width: 6.4rem; border-top: 1px solid black;"><i>Instructor</i></p>
+            <p style="width: 6.4rem; padding: 0.5rem; border-top: 1px solid black;"><i>Director</i></p>
+        </div>
+        {% else %}
+        <div class="inline">
+            <table class="table_sheet" style="width:80%;">
+                <tr>
+                    <td class="th_sheet">Skill</td>
+                    <td class="th_sheet">Reading</td>
+                    <td class="th_sheet">Writing</td>
+                    <td class="th_sheet">Listening</td>
+                    <td class="th_sheet">Speaking</td>
+                </tr>
+                <tr>
+                    <td class="th_sheet">Score</td>
+                    <td class="th_sheet">{{group_student.proClass.tot_rea}}</td>
+                    <td class="th_sheet">{{group_student.proClass.tot_wri}}</td>
+                    <td class="th_sheet">{{group_student.proClass.tot_lis}}</td>
+                    <td class="th_sheet">{{group_student.proClass.tot_spe}}</td>
+                </tr>
+                <tr>
+                    <td class="th_sheet">Total</td>
+                    <td style="border-right:none;"class="th_sheet"></td>
+                    <td style="border-left:none; border-right:none;" class="th_sheet">{{group_student.proClass.total}} / 120</td>
+                    <td style="border-left:none; border-right:none;" class="th_sheet"></td>
+                    <td style="border-left:none;" class="th_sheet"></td>
+
+                </tr>
+                <tr>
+                    <td class="th_sheet">Result</td>
+                    <td style="border-right:none;" class="th_sheet"></td>
+                    <td style="border-left:none; border-right:none;" class="th_sheet">{{group_student.proClass.result}}</td>
+                    <td style="border-left:none; border-right:none;" class="th_sheet"></td>
+                    <td style="border-left:none;" class="th_sheet"></td>
+                </tr>
+            </table>
+            <p class="two_sheet"><i>Director</i></p>
+
+            <div class="qrcode">
+                {% load static %}
+                <img src="{% static './image/amazonQR.png'%}">
+            </div>
+        </div>
+        {% endif %} 
+    </section>
+</main>
+{% endblock main %}
+<!--------------------- END OF MAIN ---------------------->
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Options</h2>
+        <div class="updates">
+            <div class="update">
+                <div class="profile-photo">
+                    {% if group_student.id_student.student_pic == "" %}
+                    {% load static %}
+                    <img src="{% static './image/profile_user.png'%}">
+                    {% else %}
+                    <img src="/{{group_student.id_student.student_pic}}">
+                    {% endif %}
+                </div>
+                <div class="message">
+                    <p><b> Full Name: {{group_student.id_student.first_name}}&nbsp;{{group_student.id_student.last_name}}</b></p>
+                    <p><b> Father Name: {{group_student.id_student.father_name}}</b></p>
+                    <small class="text-muted">Start Time: {{group_student.id_group.start_time}}<br></small>
+                    <small class="text-muted">End Date: {{group_student.id_group.end_date}}<br></small>
+                    {% if user.zinaf %}
+                    <a href="{% url 'request-payment' %}" class="btn">You acount</a>
+                    {% endif %}
+                </div>
+            </div>    
+
+            {% if group_student.middle_skill.reading or group_student.score.score %}
+            <button class="btn" onclick="window.print()">Print Resul</button>
+            {% endif %}
+            <div class="btns">
+                <a class="btn" href="{% url 'doattendance-system' group_student.id %}">Attendance</a>
+            </div>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+    <div class="sales-analytics">
+        <h2>Course Analytics</h2>
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-chart-pie icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>ACOUNT</h3>
+                    <small class="text-muted">For this class</small>
+                </div>
+                <h5 class="success">DES - {{group_student.fees.descount}}%</h5>
+                <h3 class="danger">REM - {{group_student.fees.baqi}} AFN</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>ACOUNTING</h3>
+                    <small class="text-muted">For this Class</small>
+                </div>
+                <h5 class="success">{{group_student.id_group.fees}}&nbsp;AFG</h5>
+                <h3>{{group_student.fees.fees}} AFG</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>INFO CLASS</h3>
+                    <small class="text-muted">{{group_student.id_group.subject}}</small>
+                </div>
+                <h5 class="success">ID {{ group_student.id_group.id }}</h5>
+                <h3>Room {{group_student.id_group.number_class}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock right %}

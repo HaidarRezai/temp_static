@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Add Exam Level One</h2>
+        <div class="information">
+            
+
+            <form action="{% url 'doupdate-exam-test' %}" method="post">
+                {% csrf_token %}
+                <textarea name="questions" style="width: 35rem; height: 9rem;">{{question.questions.question}}</textarea>
+                <br>
+
+                <input type="text" required name="answer_1" value="{{question.answer_1}}">
+                {% if question.questions.answer == question.answer_1 %}
+                <input type="checkbox" name="mark_1" value="1" checked>
+                {% else %}
+                <input type="checkbox" name="mark_1" value="1">
+                {% endif %}
+                <br>
+
+                <input type="text" required name="answer_2" value="{{question.answer_2}}">
+                {% if question.questions.answer == question.answer_2 %}
+                <input type="checkbox" name="mark_2" value="1" checked>
+                {% else %}
+                <input type="checkbox" name="mark_2" value="1">
+                {% endif %}
+                <br>
+
+                <input type="text" required name="answer_3" value="{{question.answer_3}}">
+                {% if question.questions.answer == question.answer_3 %}
+                <input type="checkbox" name="mark_3" value="1" checked>
+                {% else %}
+                <input type="checkbox" name="mark_3" value="1">
+                {% endif %}
+                <br>
+
+                <input type="text" required name="answer_4" value="{{question.answer_4}}">
+                {% if question.questions.answer == question.answer_4 %}
+                <input type="checkbox" name="mark_4" value="1" checked>
+                {% else %}
+                <input type="checkbox" name="mark_4" value="1">
+                {% endif %}
+                <br>
+                <input type="hidden" name="id_question" value="{{question.questions.id}}">
+                <input type="hidden" name="id_answer" value="{{question.id}}">
+                <input type="submit" value="Update">
+            </form>
+            <a href="#">Show Descriptions</a>
+
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Search Questions</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <form action="{% url 'exam'%}" method="post">
+                {% csrf_token %}
+                <input type="search" required name="search" placeholder="Search Questions">
+                <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+
+{% block analytics %}
+{% include 'exam_option.html' %}
+{% endblock analytics %}

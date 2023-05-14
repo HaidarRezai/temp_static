@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <div class="payment">
+            <h2>{{teacher.admin.first_name}} {{teacher.admin.last_name}}'s Payment</h2>
+            <table>
+                <thead>
+                <tbody>
+                    <rt>
+                        <th>Amount</th>
+                        <th>Pay Date</th>
+                        <th>Pay Time</th>
+                        <th>Pay By </th>
+                    </rt>
+                    {% for i in payment %}
+                    <tr>
+                        <td class="primary">{{i.amount}} AFG</td>
+                        <td>{{i.timestamp|date:"D d M Y" }}</td>
+                        <td>{{i.timestamp|date:"h:i A" }}</td>
+                        <td class="primary">{{i.by.first_name}} {{i.by.last_name}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="primary">Total Pay {{total_pay}} AFG</td>
+                    </tr>
+                </tbody>
+                </thead>
+            </table>
+        </div>
+        <div class="center">
+            <div class="pagination">
+                {% if payment.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ payment.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ payment.number }}</a> <a>of</a> <a>{{ payment.paginator.num_pages }}</a>
+                </span>
+
+                {% if payment.has_next %}
+                <a href="?page={{ payment.next_page_number }}">next</a>
+                <a href="?page={{ payment.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Options</h2>
+        <div class="updates center">
+            <h3 class="primary">Print Box!</h3>
+            <p>You can Print list of teacher payment.</p>   
+            <div class="btns">
+                <a class="btnu" onclick="window.print()">Print Payment</a>
+            </div>
+        </div>
+    </div>
+{% endblock recent-updates %}
+
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

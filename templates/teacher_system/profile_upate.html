@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block aside %}
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'teacher-system'%}" class="icon-a active">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'my-profile'%}" class="icon-a">
+            <span class="fa fa-users icons"></span>
+            <h3>My Classes</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Log out</h3>
+        </a>
+    </div>
+</aside>
+{% endblock aside %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister new Student</h2>
+        <div class="information">
+            <form action="{% url 'teacher-update'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name:" value="{{user.first_name}}">
+                <input type="text" name="last_name" placeholder="Last Name:" value="{{user.last_name}}">
+                <input type="text" name="email" placeholder="Email:" value="{{user.email}}">
+                <input type="text" name="username" placeholder="Username:" value="{{user.username}}">
+                <input type="text" name="password" placeholder="Fill Only if you Want to change password" value="">
+                <input type="file" name="profile_pic" name="image">
+                <br>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+{% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Comments</h2>
+        <div class="updates">
+            <div class="update">
+                <div class="profile-photo">
+                    {% load static %}
+                    <img src="/{{user.profile_pic}}">
+                </div>
+                <div class="message">
+                    <p><b>{{user.first_name}}{{user.last_name}}:</b>.</p>
+                    <small class="text-muted">{{user.last_login|date:"h:i A"}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock recent-updates %}

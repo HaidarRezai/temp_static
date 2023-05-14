@@ -1,0 +1,103 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Resgister for Exam</h2>
+        <div class="information">
+            
+
+            <form action="{% url 'student-exam'%}" method="post">
+                {% csrf_token %}
+                <input type="text" required name="first_name" placeholder="First Name:">
+                <input type="text" name="father_name" placeholder="Father Name:">
+                <br>
+                <input type="text" name="phone_one" placeholder="Phone #1:">
+                <input type="number" min="0" max="300" required name="fee_exam" placeholder="Fee Exam:">
+                <br>
+                <select name="type_exam">
+                    <option value="none">Select Level</option>
+                    <option value="1">one</option>
+                    <option value="2">two</option>
+                    <option value="3">three</option>
+                </select>
+                <br>
+                <input type="submit" value="Save">
+            </form>
+        </div>
+    </div>
+
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <tr>
+                    <th>ID Exam</th>
+                    <th>Full Name</th>
+                    <th>Father Name</th>
+                    <th>Fees</th>
+                    <th>Number ON#</th>
+                    <th>Time</th>
+                </tr>
+                {% for i in exam_info %}
+                <tr> 
+                    <td class="primary"><a href="{% url 'result-exam' i.id %}">{{i.id}}</a></td>
+                    <td class="primary"><a href="{% url 'result-exam' i.id %}">{{i.first_name}} {{i.last_name}}</a></td>
+                    <td class="primary"><a href="{% url 'result-exam' i.id %}">{{i.father_name}}</a></td>
+                    <td><a href="{% url 'result-exam' i.id %}">{{i.fee_exam}} AF</a></td>
+                    <td><a href="{% url 'result-exam' i.id %}">{{i.phone_one}}</a></td>
+                    <td id="start_date" class="primary"><a href="{% url 'result-exam' i.id %}">{{ i.timestamp|date:"D d M Y" }}</a></td>                
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if exam_info.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ exam_info.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ exam_info.number }}</a> <a>of</a> <a>{{ exam_info.paginator.num_pages }}</a>
+                </span>
+
+                {% if exam_info.has_next %}
+                <a href="?page={{ exam_info.next_page_number }}">next</a>
+                <a href="?page={{ exam_info.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}
+
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Search Student</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <h3 class="primary">Search Box!</h3>
+                <p>You can search by ID, Phone# and Name.</p>
+                <br>
+                <form action="{% url 'exam'%}" method="post">
+                {% csrf_token %}
+                <input type="search" required name="search" placeholder="Search Student">
+                <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+
+{% block analytics %}
+{% include 'exam_option.html' %}
+{% endblock analytics %}

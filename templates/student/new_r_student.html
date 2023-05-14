@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <span class="colection_svc">
+        {% for i in student %}
+        <div class="svc">
+            {% load static %}
+            <img src="{% static '/image/PVC.png'%}" class="svc_back_img">
+
+            {% if i.student_pic == "" %}
+            {% load static %}
+            <div class="svc_stu_img">
+                <img src="{% static '/image/profile_user.png'%}">
+            </div>
+            {% else %}
+            {% load static %}
+            <div class="svc_stu_img">
+                <img src="/{{i.student_pic }}">
+            </div>
+            {% endif %}
+            <div class="svc_info">
+                <h2 class="svc_info_size">{{i.id}}</h2>
+                {% if i.idcard == "" %}
+                <h2 class="svc_info_size">-----------------</h2><br>
+                {% else %}
+                <h2 class="svc_info_size">{{i.idcard}}</h2><br>
+                {% endif %}
+                <h2 class="svc_info_size">{{i.first_name}}</h2>
+                {% if i.last_name == "" %}
+                <h2 class="svc_info_size">-----------------</h2>
+                {% else %}
+                <h2 class="svc_info_size">{{i.last_name}}</h2>
+                {% endif %}
+                {% if i.father_name == "" or i.father_name == " " %}
+                <h2 class="svc_info_size">-----------------</h2>
+                {% else %}
+                <h2 class="svc_info_size">{{i.father_name}}</h2>
+                {% endif %}
+                <br>
+                <h2 class="svc_info_size_fother">{{i.timestamp|date:"D d M Y" }}</h2>
+            </div>
+        </div>
+        {% endfor %}
+    </span>
+</main>
+{% endblock main %}
+{% block recent-updates %}
+<div class="recent-updates">
+    <h2>Search Student</h2>
+    <div class="updates">
+        <div class="input-add">
+            <div class="select-class">
+                <p class="primary">You can search by ID, Name and Phone Number!</p>
+                <form action="{% url 'new_r_student'%}" method="post">
+                {% csrf_token %}
+                <input type="date" required name="search" placeholder="Search Student">
+                <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recent-updates %}
+
+{% block incom %}
+<a href="{% url 'student-new' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-user-plus icons"></span>
+            <h3>Register Student</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

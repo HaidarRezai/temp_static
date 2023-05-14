@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+<!--------------- END OF ASIDE ---------------->
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="information">
+         
+        <form action="{% url 'list-food' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="comment" placeholder="Comment">
+            <input type="number" name="amount" placeholder="Price">
+    </div>
+    <div class="recent-order">
+        <table>
+            <thead>
+            <tbody>
+                <tr>
+                    <th>Teacher_ID</th>
+                    <th>Teacher</th>
+                    <th>Lanch</th>
+                </tr>
+
+                {% for i in teacher %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td><a href="{% url 'teacher-see' i.id %}">{{i.admin.first_name}} {{i.admin.last_name}}</a></td>
+                    <td class="success">
+                        <input type="checkbox" id="present" name="pre{{forloop.counter}}" value="1">
+                        <input type="text" name="id{{forloop.counter}}" value="{{i.id}}">
+                    </td>
+                    {% empty %}
+                    <td>Sorry, no athletes in this list.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <a> <input class="present_btn center" type="submit" value="save"></a>
+        </form>
+    </div>
+</main>
+{% endblock main %}
+<!--------------------- END OF MAIN ------------------------------>

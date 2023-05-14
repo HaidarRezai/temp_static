@@ -1,0 +1,225 @@
+{% extends 'index.html' %}
+<!--------------- END OF ASIDE ---------------->
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="insights">
+        <div class="sales">
+            <span class="fa fa-user-graduate icons"></span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Students</h3>
+                    <h1>{{student}}</h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle cx='40' cy="43" r="36"></circle>
+                    </svg>
+                    <div class="number">
+                        <p>{{presentage}}%</p>
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted">This Month</small>
+        </div>
+        <!---------- END OF One ---------->
+        <div class="expenses">
+            <span class="fa fa-user-tie icons"></span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Teachers</h3>
+                    <h1>{{all_teacher}}</h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle cx='43' cy="45" r="36"></circle>
+                    </svg>
+                    <div class="number">
+                        <p>{{prese_teacher}}%</p>
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted">This Year</small>
+        </div>
+        <!---------- END OF Two ---------->
+        <div class="income">
+            <span class="fa fa-chalkboard icons"></span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Clases</h3>
+                    <h1>{{monthly_class}}</h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle cx='43' cy="45" r="36"></circle>
+                    </svg>
+                    <div class="number">
+                        <p>{{prese_group}}%</p>
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted">This Month</small>
+        </div>
+        <!---------- END OF Three ---------->
+    </div>
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>Fees Report</h2>
+        <div class="information">
+            <canvas id="myChart"></canvas>
+            <script>
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [{% for i in fees_report %}'{{i.timestamp|date:"D d M Y"}}',{% endfor %}],
+                datasets: [{
+                    label: 'Student Fees',
+                    data: [{% for i in fees_report %}'{{i.fees}}', {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                            borderWidth: 1
+                                }]
+                            },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+                        });
+            </script>
+            <div class="inline">
+                <div class="pagination">
+                    {% if fees_report.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ fees_report.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current next">
+                        <a> Page</a> <a>{{ fees_report.number }}</a> <a>of</a>
+                        <a>{{ fees_report.paginator.num_pages }}</a>
+                    </span>
+
+                    {% if fees_report.has_next %}
+                    <a href="?page={{ fees_report.next_page_number }}">next</a>
+                    <a href="?page={{ fees_report.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% comment %} <a href="{% url 'show-all'%}">Show All</a>
+        <a href="{% url 'class'%}">Active Class</a> {% endcomment %}
+    </div>
+</main>
+{% endblock main %}
+
+<!--------------------- END OF MAIN ---------------------------->
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% load static %}
+    {% block recent-updates %}
+        <div class="recent-updates">
+            <div class="updates">
+                <div class="update">
+                    <div class="profile-photo">
+                        {% if user.profile_pic == "" %}
+                        {% load static %}
+                        <img src="{% static './image/profile_user.png'%}">
+                        {% else %}
+                        <img src="/{{user.profile_pic}}">
+                        {% endif %}
+                    </div>
+                    <div class="message">
+                        <p><b>{{user.first_name}} {{user.last_name}}</b></p>
+                        <small class="text-muted">Email: {{user.email}}<br></small>
+                        <small class="text-muted">Education: {{user.teacher.degree_edu}}<br></small>
+                        <small class="text-muted">Last Login: {{user.last_login|date:"h:i A"}}<br></small>
+                        <small class="text-muted">Register at: {{user.date_joined|date:"D d M Y"}}<br></small>
+                        <br>
+                        {% if user.zinaf %}
+                        <a href="{% url 'request-payment' %}" class="btn">You acount</a>
+                        {% endif %}
+                    </div>
+                </div>    
+            </div>
+        </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Today Analytics</h2>
+
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>NEW STUDENT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <!-- <h5 class="success">+{{prese_fees}}%</h5> -->
+                <h5 class="success"></h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+
+        {% block incom %}
+        <a href="{% url 'student-new' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-user-plus icons"></span>
+                    <h3>Register Student</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+</div>
+{% endblock right %}

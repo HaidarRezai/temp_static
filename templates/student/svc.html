@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <span class="svc_student">
+        <div class="svc">
+            {% load static %}
+            <img src="{% static '/image/PVC.png'%}" class="svc_back_img">
+            {% if student.student_pic == "" %}
+            {% load static %}
+            <div class="svc_stu_img">
+                <img src="{% static '/image/profile_user.png'%}">
+            </div>
+            {% else %}
+            {% load static %}
+            <div class="svc_stu_img">
+                <img src="/{{student.student_pic}}">
+            </div>
+            {% endif %}
+            <div class="svc_info">
+                <h2 class="svc_info_size">{{student.id}}</h2>
+                {% if student.idcard == "" %}
+                <h2 class="svc_info_size">-----------------</h2><br>
+                {% else %}
+                <h2 class="svc_info_size">{{student.idcard}}</h2><br>
+                {% endif %}
+                <h2 class="svc_info_size">{{student.first_name}}</h2>
+                {% if student.last_name == "" %}
+                <h2 class="svc_info_size">-----------------</h2>
+                {% else %}
+                <h2 class="svc_info_size">{{student.last_name}}</h2>
+                {% endif %}
+                {% if student.father_name == "" or student.father_name == " " %}
+                <h2 class="svc_info_size">-----------------</h2>
+                {% else %}
+                <h2 class="svc_info_size">{{student.father_name}}</h2>
+                {% endif %}
+                <br>
+                <h2 class="svc_info_size_fother">{{student.timestamp|date:"D d M Y" }}</h2>
+            </div>
+        </div>
+    </span>
+</main>
+{% endblock main %}
+

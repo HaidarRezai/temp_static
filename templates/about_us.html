@@ -1,0 +1,145 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="information">
+        <div class="inline">
+            <div class="center right-text">
+                <p class="about_us">
+                    سیستم  مذکور تحت نام (همکار) توسط تیم آماده شده است، این تیم کاری تا فعلا به
+                    تعداد زیادی دیتابیس و سافت ویر های (سیستم مدیریت) برای هموطنان عزیز به بهترین خدمات و عالی ترین
+                    کیفیت ارایه کرده است
+                    <br>
+                    <br>
+                    انجنیر حیدر رضایی مسؤل
+                    <br>
+                    Email: haidarrezai4545@gmail.com 
+                    <br>
+                    Phone: 0776487586
+                </p>
+            </div>
+        </div>
+
+    </div>
+</main>
+{% endblock main %}
+{% block right %}
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <span class="">&#9776;</span>
+        </button>
+        <div class="theme-toggler">
+            <span class="fa fa-sun icons active"></span>
+            <span class="fa fa-moon icons"></span>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey <b>{{user.first_name}}&nbsp;{{user.last_name}}</b></p>
+                {% if user.user_type == '1'%}
+                <small class="text-muted">Admin</small>
+                {% endif %}
+                {% if user.user_type == '2'%}
+                <small class="text-muted">HOD</small>
+                {% endif %}
+                {% if user.user_type == '3'%}
+                <small class="text-muted">Staff</small>
+                {% endif %}
+                {% if user.user_type == '4'%}
+                <small class="text-muted">Teacher</small>
+                {% endif %}
+            </div>
+            <a href="{% url 'profile'%}">
+                <div class="profile-photo">
+                    {% load static %}
+                    <img src="/{{user.profile_pic}}">
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Teacher Message</h2>
+        <div class="updates">
+            <div class="update">
+                <div class="profile-photo">
+                    {% load static %}
+                    <img src="/{{user.profile_pic}}">
+                </div>
+                <div class="message">
+                    <p><b>{{user.first_name}} {{user.last_name}}</b></p>
+                    <small class="text-muted">Email: {{user.email}}<br></small>
+                    <small class="text-muted">Education: {{user.teacher.degree_edu}}<br></small>
+                    <small class="text-muted">Last Login: {{user.last_login|date:"h:i A"}}<br></small>
+                    <small class="text-muted">Register at: {{user.date_joined|date:"D d M Y"}}<br></small>
+                    <br>
+                    {% if user.zinaf %}
+                    <a href="{% url 'request-payment' %}" class="btn">You acount</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>To Day Analytics</h2>
+
+        {% block report %}
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-user-plus icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>NEW STUDENT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{presentage}}%</h5>
+                <h3>{{report_student}}</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-money-bill-alt icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>REGISTERTION</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_group}}%</h5>
+                <h3>{{report_register}}</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-coins icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>FEES REPORTS</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{prese_fees}}%</h5>
+                <h3>{{report_fees}}</h3>
+            </div>
+        </div>
+        {% endblock report %}
+
+        {% block incom %}
+        <a href="{% url 'student-new' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-user-plus icons"></span>
+                    <h3>Register Student</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+</div>
+{% endblock right %}

@@ -1,0 +1,156 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% if user.user_type == '2' %}
+{% load active_link_tags%}
+<aside>
+    {% block top_side %}
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    {% endblock top_side %}
+    <div class="sidebar">
+        {% block home_side %}
+        <a href="{% url 'oner'%}" class="icon-a {% active_link 'home' 'active' %}">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        {% endblock home_side %}
+
+        <a href="{% url 'qars'%}" class="icon-a {% active_link 'qars' 'active' %}">
+            <span class="fa fa-bell icons"></span>
+            <h3>Remainder</h3>
+        </a>
+        {% block teacher_side %}
+        <a href="{% url 'staff-all'%}" class="icon-a {% active_link 'teacher' 'active' %}">
+            <span class="fa fa-user-tie  icons"></span>
+            <h3>View Staff</h3>
+        </a>
+        {% endblock teacher_side %}
+        <a href="{% url 'report-account'%}" class="icon-a">
+            <span class="fa fa-coins icons"></span>
+            <h3>Acounting</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Logout</h3>
+        </a>
+    </div>
+</aside>
+{% else %}
+<aside>
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'home'%}" class="icon-a">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'class'%}" class="icon-a">
+            <span class="fa fa-book-open  icons"></span>
+            <h3>Add Class</h3>
+        </a>
+        <a href="{% url 'qars'%}" class="icon-a active">
+            <span class="fa fa-money-bill-alt icons"></span>
+            <h3>Remainder</h3>
+        </a>
+        <a href="{% url 'exam' %}" class="icon-a">
+            <span class="fa fa-book-reader icons"></span>
+            <h3>Exam</h3>
+        </a>
+        <a href="{% url 'student'%}" class="icon-a">
+            <span class="fa fa-users icons"></span>
+            <h3>All Students</h3>
+        </a>
+        <a href="{% url 'teacher'%}" class="icon-a">
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>View Teacher</h3>
+        </a>
+        <a href="{% url 'acounting'%}" class="icon-a">
+            <span class="fa fa-coins icons"></span>
+            <h3>Acounting</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Logout</h3>
+        </a>
+    </div>
+</aside>
+{% endif %}
+{% endblock aside %}
+
+
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <h2>List of Remainder</h2>
+        <table>
+            <thead>
+                <tbody>
+                    <rt>
+                        <th>Class_ID</th>
+                        <th>Full Name</th>
+                        <th>Subject</th>
+                        <th>Start Time</th>
+                        <th>Pyment</th>
+                        <th>Remainder</th>
+                        <th>Discount</th>
+                        <th>Start Date</th>
+                    </rt>
+                    {% for i in fees %}
+                        <tr>
+                            <td>{{i.id}}</td>
+                            <td><a href="{% url 'student-class_info' i.group_student.id %}">{{i.group_student.id_student.first_name}}
+                                    {{i.group_student.id_student.last_name}}</td></a>
+                            <td>{{i.group_student.id_group.subject}}</td>
+                            <td>{{i.group_student.id_group.start_time}}</td>
+
+                            <td class="success"><a>{{i.group_student.fees.fees}}</a></td>
+                            <td class="danger">{{i.group_student.fees.baqi}}</td>
+                            <td class="danger">{{i.group_student.fees.descount}}</td>
+
+                            <td>{{i.group_student.id_group.start_date|date:"D d M Y"}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </thead>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if fees.has_previous %}
+                <a href="?page={{ fees.previous_page_number }}"><span class="fa fa-chevron-left spancons"></span></a>
+                {% endif %}
+
+                {% for i in fees.paginator.page_range %}
+                    {% if fees.number == i %}
+                   <a class="active">{{i}}</a>
+                    {% else %}
+                    <a href="?page={{ i }}">{{i}}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if fees.has_next %}
+                <a href="?page={{ fees.next_page_number }}"><span class="fa fa-chevron-right spancons"></span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}

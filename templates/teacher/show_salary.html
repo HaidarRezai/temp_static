@@ -1,0 +1,99 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+         
+
+        <h2>List of salary {{teacher.admin.first_name}} {{teacher.admin.last_name}}</h2>
+        <table>
+            <thead>
+            <tbody>
+                <rt>
+                    <th>ID Class</th>
+                    <th>Course</th>
+                    <th>Type Salary</th>
+                    <th>Salary Count</th>
+                    <th>Start Date</th>
+                    <th>More</th>
+                </rt>
+                {% for i in group %}
+                {% if i.pay.salary %}
+                {% else %}
+                {% if i.id_group.active == '0' %}
+                <tr>
+                    <td>{{i.id_group.id}}</td>
+                    <td class="primary">
+                        {% if i.id_group.active == '1'%}<span class="fa fa-circle icons active"></span>
+                        {% else %}<span class="fa fa-circle icons danger"></span>
+                        {% endif %}
+                        {{i.id_group.subject}}
+                    </td>
+                    {% comment %} <td>{{i.pay.salary}}</td>
+                    <td class="danger">{{i.pay.baqiyat}}</td> {% endcomment %}
+                    {% comment %} <td class="success">{{i.pay.pish_pay}}</td> {% endcomment %}
+                    <td class="success">{{i.amount_salary.type_salary}}</td>
+                    <td class="success">{{i.amount_salary.salary}}</td>
+                    <td>{{i.timestamp|date:"D d M Y" }}</td>
+
+                    {% if i.amount_salary.type_salary == 'Month' %}
+                    <td><a href="{% url 'list-payed' teacher.id %}">More</a></td>
+                    {% else %}
+                    <td><a href="{% url 'more-salary' i.id i.id_group.id %}">More</a></td>
+                    {% endif %}
+
+                </tr>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <a href="{% url 'list-payed' teacher.id %}" class="center">List Month</a>
+        <div class="center">
+            <div class="pagination">
+                {% if group.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ group.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current next">
+                    <a> Page</a> <a>{{ group.number }}</a> <a>of</a> <a>{{ group.paginator.num_pages }}</a>
+                </span>
+
+                {% if group.has_next %}
+                <a href="?page={{ group.next_page_number }}">next</a>
+                <a href="?page={{ group.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+{% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Options</h2>
+        <div class="updates center">
+            <h3 class="primary">Print Box!</h3>
+            <p>You can Print list of teacher payment.</p>
+            <div class="btns">
+                <a class="btnu" href="{% url 'teacher-show_paymen' teacher.id %}">List of Payment</a>      
+            </div>
+        </div>
+    </div>
+{% endblock recent-updates %}
+{% block incom %}
+<a href="{% url 'teacher-add' %}">
+    <div class="item add-product">
+        <div>
+            <span class="fa fa-chalkboard-teacher icons"></span>
+            <h3>Register Teacher</h3>
+        </div>
+    </div>
+</a>
+{% endblock incom %}

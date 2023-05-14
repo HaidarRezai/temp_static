@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% block main %}
+<main>
+    {% include 'logo.html' %}
+    <div class="date">
+        <input type="date">
+    </div>
+    <!---------- END OF insights ---------->
+    <br>
+    <br>
+    <h2> Finance Manager </h2>
+    <div class="information">
+         
+        <div>
+            <form action="{% url 'add-zinaf'%}" method="post">
+                {% csrf_token %}
+                <select class="input" required name="zinaf">
+                    <option value="Null">---- Select Teacher One ----</option>
+                    {% for i in customUser %}
+                        <option value="{{i.id}}">{{i.first_name}} {{i.last_name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="text" required name="comment" placeholder="Datils">
+                <br>
+                <input type="number" required name="zinaf_prec" placeholder="%">
+                <br>
+                <input type="submit" value="Save">
+            </form>
+        </div>
+    </div>  
+</main>
+{% endblock main %}
+

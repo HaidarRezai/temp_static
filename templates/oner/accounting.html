@@ -1,0 +1,237 @@
+{% extends 'index.html' %}
+{% block aside %}
+{% load active_link_tags%}
+<aside>
+    {% block top_side %}
+    <div class="top">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static './image/logo.png'%}">
+            <h2>BAH<span class="danger">AR</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp">&#9776;</span>
+        </div>
+    </div>
+    {% endblock top_side %}
+    <div class="sidebar">
+        <a href="{% url 'oner'%}" class="icon-a ">
+            <span class="fa fa-home spancons"></span>
+            <h3>Home</h3>
+        </a>
+        <a href="{% url 'qars'%}" class="icon-a {% active_link 'qars' 'active' %}">
+            <span class="fa fa-money-bill-alt icons"></span>
+            <h3>Remainder</h3>
+        </a>
+        <a href="{% url 'staff-all'%}" class="icon-a ">
+            <span class="fa fa-user-tie  icons"></span>
+            <h3>View Staff</h3>
+        </a>
+        <a href="{% url 'report-account'%}" class="icon-a active">
+            <span class="fa fa-coins icons"></span>
+            <h3>Acounting</h3>
+        </a>
+        <a href="{% url 'logout' %}" class="icon-a">
+            <span class="fa fa-sign-out-alt icons"></span>
+            <h3>Logout</h3>
+        </a>
+    </div>
+</aside>
+{% endblock aside %}
+
+{% block main %}
+<main>
+
+    {% include 'logo.html' %}
+    
+    <!---------- END OF insights ---------->
+   
+    <div class="inline">
+        {% if totla_report_day or output_totla_report_day %}
+        <div class="information">
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>By</th>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                    </tr>
+                    <script>var y=0;</script>
+                    {% for i in report_day %}
+                        <tr>
+                            <td class="primary">{{i.by.first_name}} {{i.by.last_name}} </td>
+                            <td class="success">{{i.money}}</td>
+                            <td class="primary">{{i.datils}}</td>
+                            <td> {{i.timestamp|time}}</td>
+                        </tr>
+                        <script>y+={{i.money}}</script>
+                        {% ifchanged i.timestamp|date:"d" %}
+                            <tr>
+                                <td>Day: {{i.timestamp|date:"d"}}</td>
+                                <td class="success">Total:
+                                </td>
+                                <td><script>
+                                    document.write(y)
+                                    y=0
+                                </script>
+                                AFG</td>
+                                <td></td>
+                            </tr>
+                        {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+        <div class="information" style="margin-left:5px;">
+            <table>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th>By</th>
+                        <th>Money</th>
+                        <th>Datils</th>
+                        <th>Time</th>
+                    </tr>
+                    <script>var x=0;</script>
+                    {% for i in output_report_day %}
+                    <tr>
+                        <td class="primary">{{i.by.first_name}} {{i.by.last_name}} </td>
+                        <td class="danger">{{i.money}} </td>
+                        <td class="primary">{{i.datils}} </td>
+                        <td> {{i.timestamp|time}}</td>
+                    </tr>
+                    <script>x+={{i.money}}</script>
+                    {% ifchanged i.timestamp|date:"d" %}
+                    <tr>
+                        <td>Day: {{i.timestamp|date:"d"}}</td>
+                        <td class="danger">Total:</td>
+                        <td><script>document.write(x)
+                            x=0
+                            </script>AFG</td>
+                        <td></td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+        {% else %}
+        <div class="information">
+            <h3>Not Fount </h3>
+            <div>
+                {% endif %}
+                <div>
+</main>
+{% endblock main %}
+
+{% block right %}
+<div class="right">
+    {% include 'profile_image.html' %}
+    <!-- End top -->
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Reports</h2>
+        <div class="updates">
+            <form action="{% url 'report-account'%}" method="post">
+                {% csrf_token %}
+                <input type="month" required name="search">
+                <input type="submit" value="Search">
+            </form>
+            <table>
+                <thead>
+                <tbody>
+                    <rt>
+                        <th>Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th>Input <span
+                                class="fa fa-arrow-down icons success"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th>Output <span class="fa fa-arrow-up icons danger"></span></th>
+                    </rt>
+                    <tr>
+                        <td class="primary">To Day&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="success">{{totla_report_day}} </td>
+                        <td class="danger">{{output_totla_report_day}} </td>
+                    </tr>
+                    <tr>
+                        <td class="primary">This Month</td>
+                        <td class="success">{{totla_report_month}} </td>
+                        <td class="danger">{{output_totla_report_month}} </td>
+
+                    </tr>
+                    <tr>
+                        <td class="primary">This Year</td>
+                        <td class="success">{{totla_report_year}} </td>
+                        <td class="danger">{{output_totla_report_year}} </td>
+
+                    </tr>
+                    <tr>
+                        <td class="primary">Total All</td>
+                        <td class="success">{{input}} </td>
+                        <td class="danger">{{output}} </td>
+                        <td> {{i.timestamp|time}}</td>
+                    </tr>
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+
+    <!-- END UPDATES -->
+    <div class="sales-analytics">
+        <h2>Course Analytics</h2>
+        <div class="item offline">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>DALY REPORT</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5 class="success">+{{pre_report_day}}%</h5>
+                <h3>{{totla_report_day}} AFG</h3>
+            </div>
+        </div>
+        <div class="item online">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>MONTH REPORT</h3>
+                    <small class="text-muted">Last 30 Days</small>
+                </div>
+                <h5 class="success">+{{pre_report_month}}%</h5>
+                <h3>{{totla_report_month}} AFG</h3>
+            </div>
+        </div>
+        <div class="item customers">
+            <div class="icon">
+                <span class="fa fa-home icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>YEAT REPORT</h3>
+                    <small class="text-muted">Last 1 Year</small>
+                </div>
+                <h5 class="success">+{{pre_report_year}}%</h5>
+                <h3>{{totla_report_year}} AFG</h3>
+            </div>
+        </div>
+        {% block incom %}
+        <a href="{% url 'student-new' %}">
+            <div class="item add-product">
+                <div>
+                    <span class="fa fa-user-plus icons"></span>
+                    <h3>Register Student</h3>
+                </div>
+            </div>
+        </a>
+        {% endblock incom %}
+    </div>
+</div>
+{% endblock right %}

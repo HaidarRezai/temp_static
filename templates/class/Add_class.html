@@ -1,0 +1,181 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<main>
+    {% include 'logo.html' %}
+    <!---------- END OF insights ---------->
+    <div class="recent-order">
+        <table>
+            <thead>
+                <rt>
+                    <th>Class_ID</th>
+                    <th>Subject</th>
+                    <th>Time</th>
+                    <th>Fees</th>
+                    <th>Class#</th>
+                    <th>Start Date</th>
+                </rt>
+            </thead>
+            <tbody>
+                {% for i in info_class %}
+                <tr>
+                    {% comment %} <td>{% if i.end_date > now.day %}afads{% endif %}</td> {% endcomment %}
+                    <td><a style=" background:var(--color-primary); color:white; padding:0.3rem;border-radius:0.5rem;"
+                            href="{% url 'class-info' i.id %}"><span class="fa fa-lightbulb icons"></span> {{i.id}}</a>
+                    </td>
+                    <form action="{% url 'finisht' %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" hidden name="id_class" value="{{i.id}}">
+                        <td>
+                            <div class="dropdown">
+                                <span class="dropbtn">
+                                    {% if i.active == '1' %}
+                                    <span class="fa fa-circle icons active"></span> {{i.subject}}
+                                    {% else %}
+                                    <span class="fa fa-circle icons danger"></span> {{i.subject}}
+                                    {% endif %}
+                                </span>
+                                <div class="dropdown-content">
+                                    {% if i.active == '1' %}
+                                    <button class="acitve_class"><span class="fa fa-circle icons active"></span>
+                                        Active</button>
+                                    {% else %}
+                                    <button class="acitve_class"><span class="fa fa-circle icons danger"></span>
+                                        Active</button>
+                                    {% endif %}
+                                    <span><a style="background: var(--color-primary); color:white;border-radius:0.5rem; width: 80%;"
+                                            href="{% url 'class-update' i.id %}">Update</a></span>
+                                    <span><a style="background: red; color:white;border-radius:0.5rem; width: 80%;"
+                                            href="{% url 'class-delete' i.id %}">Delete</a></span>
+                                </div>
+                            </div>
+                        </td>
+                    </form>
+                    <td>{{i.start_time}}</td>
+                    <td>{{i.fees}} AF</td>
+                    <td>{{i.number_class}}</td>
+                    <td id="start_date" class="primary">{{ i.start_date|date:"D d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="center">
+            <div class="pagination">
+                {% if info_class.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ info_class.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current next">
+                    <a> Page</a> <a>{{ info_class.number }}</a> <a>of</a>
+                    <a>{{ info_class.paginator.num_pages }}</a>
+                </span>
+                {% if info_class.has_next %}
+                <a href="?page={{ info_class.next_page_number }}">next</a>
+                <a href="?page={{ info_class.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{% url 'class'%}"><span class="success">Active Class</span></a>
+        <a href="{% url 'show-all'%}"><span class="danger">Deactive Class</span></a>
+    </div>
+</main>
+{% endblock main %}
+{% block right %}
+<div class="right">
+    {% block top %}
+        {% include 'profile_image.html' %}
+        {% endblock top %}
+    {% block recent-updates %}
+    <div class="recent-updates">
+        <h2>Search Class</h2>
+        <div class="updates">
+            <div class="input-add">
+                <div class="select-class">
+                    <h3 class="primary">Search Box!</h3>
+                    <p>You can search by ClassID, Class Name,Class# and Fee.</p>
+                    <form action="{% url 'class'%}" method="post">
+                        {% csrf_token %}
+                        <input type="search" autofocus required name="search" placeholder="Search Class">
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock recent-updates %}
+    <div class="sales-analytics">
+        <h2>Create Class</h2>
+        <div class="item customers" onclick="itemToggle('English');">
+            <div class="icon">
+                <span class="fa fa-plus-square icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>English</h3>
+                    <small class="text-muted">Click on this button</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3></h3>
+            </div>
+        </div>
+        {% include 'class/add_class/english.html' %}
+        <div class="item customers" onclick="itemToggle('Computer');">
+            <div class="icon">
+                <span class="fa fa-plus-square icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Computer</h3>
+                    <small class="text-muted">Click on this button</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3></h3>
+            </div>
+        </div>
+        {% include 'class/add_class/computer.html' %}
+        <div class="item customers" onclick="itemToggle('Almany');">
+            <div class="icon">
+                <span class="fa fa-plus-square icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>German</h3>
+                    <small class="text-muted">Click on this button</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3></h3>
+            </div>
+        </div>
+        {% include 'class/add_class/almany.html' %}
+        <div class="item customers" onclick="itemToggle('Chains');">
+            <div class="icon">
+                <span class="fa fa-plus-square icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Chinese</h3>
+                    <small class="text-muted">Click on this button</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3></h3>
+            </div>
+        </div>
+        {% include 'class/add_class/chains.html' %}
+        <div class="item customers" onclick="itemToggle('French');">
+            <div class="icon">
+                <span class="fa fa-plus-square icons"></span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>French</h3>
+                    <small class="text-muted">Click on this button</small>
+                </div>
+                <h5 class="success"></h5>
+                <h3></h3>
+            </div>
+        </div>
+        {% include 'class/add_class/french.html' %}
+    </div>
+</div>
+{% endblock right %}

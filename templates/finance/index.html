@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon English Academy</title>
+    <link rel="stylesheet" href="{% static 'finance/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'finance/font/css/all.min.css'%}">
+    <link rel="icon" href="{% static 'image/logo.png'%}">
+    <script src="{% static 'sweetalert-master/docs/assets/sweetalert/sweetalert.min.js'%}"></script>
+</head>
+
+<body>
+    {% include 'alert.html' %}  
+    <nav>
+        <div class="container">
+            <img class="logo" src="{% static './image/logo.png'%}">
+            <div class="search-bar">
+                <span class="fa fa-search icons"></span>
+                <input type="search" placeholder="Search">
+            </div>
+            <div class="theme-btn">
+                <span class="fa fa-sun icons active"></span>
+                <span class="fa fa-moon icons"></span>
+            </div>
+            <div class="profile-area">
+                <h4>wellcome</h4>
+                <div class="profile">
+                    <div class="profile-photo">
+                        {% load static %}
+                        <img src="/{{user.profile_pic}}">
+                    </div>
+                    <h5>{{user.first_name}}&nbsp;{{user.last_name}}</h5>
+                    {% if user.user_type == '4' %}
+                        <a href="{% url 'profile-update' %}">
+                    {% else %}
+                        <a href="{% url 'profile'%}">
+                    {% endif %}
+                        <span class="fa fa-angle-down icons"></span>
+                        </a>
+                </div>
+                <button id="menu-btn">
+                    <span class="fa fa-home icons"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- end navbar -->
+    <main>
+        {% block aside %}
+        {% load active_link_tags%}
+        <aside>
+            <button id="close-btn">
+                <span class="fa fa-times-circle icons"></span>
+            </button>
+            <div class="sidebar">
+                <a href="{% url 'finance_home' %}" class="{% active_link 'finance_home' 'active' %}">
+                    <span class="fa fa-calculator spancons"></span>
+                    <h4>Calculator</h4>
+                </a>
+                <a href="{% url 'clear_table' %}" class="{% active_link 'clear_table' 'active' %}">
+                    <span class="fa fa-bicycle spancons"></span>
+                    <h4>Table</h4>
+                </a>
+                <a href="./forms.html">
+                    <span class="fa fa-balance-scale spancons"></span>
+                    <h4>Forms</h4>
+                </a>
+                <a href="{% url 'home' %}">
+                    <span class="fa fa-reply-all spancons"></span>
+                    <h4>Back</h4>
+                </a>
+            </div>
+            <div class="updates">
+                <form action="{% url 'finance_clear' %}">
+                    <span class="fa fa-cloud-upload-alt spancons"></span>
+                    <h4>Clear Finance</h4>
+                    <p>Amount this perud</p>
+                    <p>{{total_account.total_account}}</p>
+                    {% if total_account.total_account == 0 %}
+                    {% else %}
+                    <input type="submit" value="Clear Now">
+                    {% endif %}
+                </form>
+            </div>
+        </aside>
+        {% endblock aside %}
+
+        {% block section_middle %}
+
+        {% endblock section_middle %}
+
+        {% block section_right %}
+
+        {% endblock section_right %}
+
+    </main>
+    {% block popupana %}
+
+    {% endblock popupana %}
+
+    <script src="{% static 'finance/package/dist/chart.js'%}"></script>
+    <script src="{% static 'finance/js/index.js'%}"></script>
+    
+</body>
+</html>
